@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gene ball</title>
+    <script>
+        const log =(...msg)=> console.log(   ...msg)
+        const msg =    msg => console.log('..', msg)
+        const tab =    msg => console.table(msg)
+        const tap =(c, msg)=> console.table(msg,c)
+    </script>
+</head>
+<body>
+    <pre>v0.2</pre>
+    <script src="utils.js"></script>
+    <script src="models.js"></script>
+    <script>
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ run tests
+        let pupa = new Sheep({name:'Pupa'})
+        let lupa = new Sheep({name:'Lupa'})
+        let pupi = new Squad({name:'Pupa`s team'})
+        let game = new Party({name:'Pupa-za-Lupa battle'})
+        game.registerPlayer()
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+        log(pupa, pupa.constructor.name)
+        log(pupi, pupi.constructor.name)
+        log(game, game.constructor.name)
+        tab([pupa])
+        tab({pupa,lupa})
+        tap(['nuke'], [pupa,lupa].reduce( (o,x)=>({[x.name]:x,...o}) ,{}));
+        tap(['nuke'], {[pupa.name]:pupa,[lupa.name]:lupa})
+        tap(['name'], [pupa])
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    </script>
+    <script src="ui0.js"></script>
+</body>
