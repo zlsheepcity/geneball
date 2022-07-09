@@ -1,24 +1,10 @@
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ utils
 
+// import GMO from GMO
 // import NameWizard from utils
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ library
 
-const GMO = function GeneticallyModifiedObject
-(dna) {
-    let model ={
-        name:'',
-        nuke:{},
-        };
-    Object.assign(this, model, dna)
-};
-
-const registerPlayer222 = (
-    player = new Sheep(),
-    team = 0,
-) => {
-    this.Squad[team].push(player)
-}
 const registerPlayer = function (
     player = new Sheep(),
     team = 0,
