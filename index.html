@@ -14,6 +14,7 @@
     <script src="utils.js"></script>
     <script src="models/GMO.js"></script>
     <script src="models/GEO.js"></script>
+    <script src="models/Party.js"></script>
     <script src="models.js"></script>
     <script src="motors.js"></script>
 
@@ -39,7 +40,9 @@
         let lupa = new Sheep({name:'Lupa'})
         let pupi = new Squad({name:'Pupa`s team'})
         let game = new Party({name:'Pupa-za-Lupa battle'})
-        game.registerPlayer()
+        // game.registerPlayer()
+        game.Setup({name:'Pupa·za·Lupa Cup'});
+        game.Check();
         /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
         log(pupa, pupa.constructor.name)
         log(pupi, pupi.constructor.name)
