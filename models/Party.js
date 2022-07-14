@@ -1,25 +1,19 @@
 let PartyRules = {
-    squadTemplate: [ [{},{},{}], [{},{},{}] ],
+    squadLineup: [[ {},{},{} ],[ {},{},{} ]],
 };
 const Party = function (dna) {
 
     let model = new GMO({
-        squad: PartyRules.squadTemplate,
+        squad: PartyRules.squadLineup,
         bumba: {},
         sheep: {},
         story: [],
         score: [0,0],
         touch:  0,
+        field:  0,
+        order: [0,0],
         });
     const Party = Object.assign(this, model, dna)
-
-    Party.TotalScore = f => {
-        let inc = b => b.score[0] > b.score[1] ? [1,0]:[0,1];
-        let scores = Party.story.reduce(
-            (a, b) => [ a[0]+inc(b)[0], a[1]+inc(b)[1] ],
-            [0, 0] );
-        return 0===f||f===1 ? scores[f]:scores;
-    };
 
     Party.TotalScore =()=> Party.story.reduce(
         (a, b) => a.map(
@@ -30,22 +24,38 @@ const Party = function (dna) {
         (a, b) => a+b.touch,
             0) +Party.touch;
 
+    Party.TotalStage =()=> Party.TotalScore().reduce(
+        (a, b) => 1*a+b, 0);
+
+    Party.TouchSheep =()=> {
+    };
+
     Party.Setup = function (dna) {
         let model = dna.setup? {}:{
             name: 'Party Game',
-            squad: Party.squad.map(toSheep),
+            squad: Party.squad.map(x => x.map(toSheep) ),
             setup: Party.ping,
             };
         Object.assign(Party, model, dna)
     };
 
     Party.Check = function (dna) {
-        console.group('Party.Check');
+        console.group('Party.Check: '+Party.name);
         [
-        'TotalScore',
-        'TotalTouch',
-        ].map( f => console.log( f+':', Party[f]() ) );
+            'TotalScore',
+            'TotalTouch',
+            'TotalStage',
+        ].map(f => console.log( `${f}:`, Party[f]() ));
+        log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ CURRENT STAGE');
+        [
+            'touch',
+            'bumba',
+        ].map(f => console.log( `${f}:`, Party[f] ));
+        log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ TEAMS');
+        [0,1].map(f => console.log( `Squad[${f}]`, Party.squad[f] ));
+        log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
         console.groupEnd();
+        return 'Party.Check: complete';
     };
 
     Party.Stage = function (dna) {
