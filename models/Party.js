@@ -1,19 +1,44 @@
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ utils
+// import { Sheep, toSheep } from Sheep
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+let {o} = {o: 'o'};
 let PartyRules = {
-    squadLineup: [[ {},{},{} ],[ {},{},{} ]],
+    defaultLineup   :[[{o},{o},{o}],[{o},{o},{o}]].map(qp=>qp.map(toSheep)),
+    setPointValue   :11,
+    setsToWinGame   :3,
 };
 const Party = function (dna) {
-
-    let model = new GMO({
-        squad: PartyRules.squadLineup,
-        bumba: {},
-        sheep: {},
+    let partySeed = {
+        squad: [[],[]],
         story: [],
-        score: [0,0],
-        touch:  0,
+        };
+    let stageSeed = {
+        bumba: {}, // where is it now?
         field:  0,
         order: [0,0],
-        });
+        score: [0,0],
+        };
+    let pointSeed = {
+        touch:  0,
+        };
+    let model = new GMO({
+        rules: PartyRules,
+        squad: dna.teams,
+        ...partySeed,
+        ...stageSeed,
+        ...pointSeed,
+        ...dna });
     const Party = Object.assign(this, model, dna)
+
+    Party.Start = function (dna) {
+        //const refer
+        let start_new_party = {
+            ...partySeed,
+            squad: dna.squad || Party.rules.defaultLineup,
+        };
+        Party.Setup({ ...partySeed, ...dna })
+    };
 
     Party.TotalScore =()=> Party.story.reduce(
         (a, b) => a.map(
@@ -28,6 +53,19 @@ const Party = function (dna) {
         (a, b) => 1*a+b, 0);
 
     Party.TouchSheep =()=> {
+        // squad[field][order]
+    };
+
+    Party.PointTaken =()=> {
+        // story.push({
+        // 
+        // })
+    };
+
+    Party.StageTaken =()=> {
+        // story.push({
+        // 
+        // })
     };
 
     Party.Setup = function (dna) {
@@ -46,7 +84,9 @@ const Party = function (dna) {
             'TotalTouch',
             'TotalStage',
         ].map(f => console.log( `${f}:`, Party[f]() ));
-        log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ CURRENT STAGE');
+        log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ STORY');
+        log(Party.story);
+        log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ CURRENT POINT');
         [
             'touch',
             'bumba',
@@ -67,7 +107,15 @@ const Party = function (dna) {
         Party.Touch()
     };
 
-    Party.Point = function (dna) {};
+
+
+    Party.Point = function (dna) {
+        let start_new_point = {
+            touch: 0,
+            bumba: new Bumba(),
+        };
+        Party.Setup(start_new_point)
+    };
 
     Party.Touch = function (dna) {
         Party.stage = Object.entries({

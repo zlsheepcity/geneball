@@ -3,7 +3,7 @@ const GMO = function GeneticallyModifiedObject
 
     let model = {
         name: '',
-        nuke: {},
+        nuke: {}, // r:[],g:[],f:[],h:[]
         ping: true,
         };
     Object.assign(this, model, dna)
