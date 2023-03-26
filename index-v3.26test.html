@@ -1,0 +1,68 @@
+<title>game configs</title>
+<script>
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    const kanbanTaskStory = {
+        data: '',
+    };
+    const kanbanTaskComment = {
+        name: '',
+    };
+    const kanbanTaskState = {
+        estimate: 0,
+        assignee: false,
+        resolved: false,
+        progress: 'backlog', //todo//inprogress//done//
+        comments: [kanbanTaskComment],
+    };
+    const kanbanTask = {
+        story: [kanbanTaskStory],
+        state: [kanbanTaskState],
+        nuke:{
+            type: 'feat', //bugs//
+            init: kanbanTaskState,
+            state: [kanbanTaskState],
+        },
+    };
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    const KanbanBoard = function(dna) {
+        const {
+            O:DNA,
+            tasks,
+            story,
+        }=( nuke => Object.assign( this,dna,{nuke} ))({
+            O:this,
+            tasks: [],
+            story: [],
+         ...dna.nuke,
+             }).nuke;
+        DNA.test =O=> dna.test && dna.test(O||DNA)
+        DNA.makeTask =O=> ({...O, ...kanbanTask, ...O})
+        DNA.takeTask =O=> (l=>({O,i:--l}))(tasks.push(DNA.makeTask(O)))
+        DNA.giveTask =O=> tasks[O?.i||0]
+        DNA.giveList =O=> tasks
+        DNA.dsAssignee =O=> O?.state?.assignee ||0
+        DNA.isAssignee =O=> O?.state?.assignee !==false
+        DNA.isResolved =O=> O?.state?.resolved !==false
+
+    };
+    let KB = new KanbanBoard({
+        test:me => {
+            const tt = me.takeTask
+            const tg = me.giveTask
+            const tl = me.giveList
+            console.group('KanbanBoard alive test')
+            console.log(me)
+            console.log('takeTask:', tt({t:1}))
+            console.log('takeTask:', tt({t:2}))
+            console.log('giveList:', tl().length, tl())
+            console.log('takeTask:', tt({t:3}))
+            console.log('giveList:', tl().length, tl())
+            console.log('Task I2:', tg({i:2}))
+            console.log('TaskI99:', tg())
+            console.groupEnd()
+        }
+    });
+    KB.test()
+
+</script>

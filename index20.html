@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gene ball home20</title>
+    <script>
+        const log =(...msg)=> console.log(   ...msg)
+        const msg =    msg => console.log('..', msg)
+        const tab =    msg => console.table(msg)
+        const tap =(c, msg)=> console.table(msg,c)
+    </script>
+</head>
+<body>
+
+
+<script>
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ina
+
+const acidseed = 'Oina Tina Sina Mina Hina Gina Aina Funi'
+const acid = acidseed.split(' ')
+const aminacid = acid.map(o=>o[0])//.join('')
+
+const uIndexPick = list => Math.floor( Math.random()*list.length )
+const acidPick = (acid) => acid[uIndexPick(acid)]
+const acidMix3 = (acid = aminacid) => {
+    const ne = taken => o=>taken!==o
+    const take = acidPick(acid)
+    const make = acidPick(acid.filter(ne(take)))
+    const give = acidPick(acid.filter(ne(take)).filter(ne(make)))
+    return [take,make,give].join('·')
+}
+
+console.log(acidMix3(acid))
+console.log(acidMix3(acid))
+console.log(acidMix3(acid))
+console.log(acidMix3(acid))
+console.log(acidMix3(acid))
+console.log(acidMix3(acid))
+console.log(acidMix3(), acidMix3(), acidMix3())
+console.log(acidMix3(), acidMix3(), acidMix3())
+console.log(acidMix3(), acidMix3(), acidMix3())
+
+console.log(acidPick(aminacid), acidPick(aminacid), acidPick(aminacid))
+console.log(acidPick(aminacid), acidPick(aminacid), acidPick(aminacid))
+console.log(acidPick(aminacid), acidPick(aminacid), acidPick(aminacid))
+
+    
+const deploy = [
+    {  M:+2, rule:'Skilled deploy'},
+    {  H:+1, rule:'Skilled deploy'},
+    {  O:+1, rule:'Skilled deploy'},
+    {  A:-1, rule:'Like a kid'},
+    { MA:-1, rule:'Not mine kid'},
+    { GA:-3, rule:'Kid hapiness'},
+    { HA:+3, rule:'Grow experience'},
+    {MGA:+5, rule:'Grow hapiness'},
+    {HGA:+5, rule:'Grow hapiness'},
+    { MO:+1, rule:'Team assist'},
+    { HO:+1, rule:'Team assist'},
+    { GO:+1, rule:'Team assist'},
+]
+
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+let META = {
+    BASE: 'ABC',
+    SEED: {
+        name: '',
+        nuke: {},
+        },
+};
+
+let GEN = { ...META, ...META.SEED };
+
+GEN.Blastula = pool => (pool||[]).reduce(
+    (nuke, gene) => (
+        N=> G=> A=> ({...N,[A]:[...(N[A]||[]), G]})
+    )(nuke)(gene)(gene[0])
+    ,{}
+);
+
+
+GEN.JoinNukes = (...nukes) => {
+    
+};
+
+const NukeFeed = function(rna, oO = this) {
+    let protein = G=> (a,b)=> [ ...(a[G]||[]), ...(b[G]||[]) ];
+    let eachKey = G=> oO.nuke[G] = protein(G)( oO.nuke, rna.nuke );
+    Object.keys(rna.nuke).map(eachKey);
+    return oO;
+};
+
+const CharAtagonist = A => {
+    let I= [...META.BASE].indexOf(A);
+    return [...META.BASE,...META.BASE][++I];
+};
+
+const AcidPower = (acid, base) => {
+    if ( !acid || !acid.length ) return 0;
+    const chain =  acid.join('');
+    const charA = (base || acid[0] || 'O')[0];
+    const charB = CharAtagonist(charA);
+    const powrA = chain.split(charA).length;
+    const powrB = chain.split(charB).length;
+    return powrA>powrB ? powrA-powrB :0;
+};
+const NukePower = function(oO = this) {
+    return oO;
+};
+
+let GMO = function GeneticallyModifiedObject
+(dna) {
+
+    const model = {
+     ...META.SEED,
+        Feed: NukeFeed,
+    };
+    Object.assign(this, model, dna)
+};
+
+
+GEN.Char = Word => {
+    let list = Word && Word.length ? Word:GEN.BASE;
+    let pick = Math.floor( Math.random()*list.length );
+    return list[pick];
+};
+
+GEN.Gene = Base => {
+    const H = GEN.Char(Base);
+    const g = H+GEN.BASE
+    return [ H, g, g ]
+        .map(GEN.Char)
+        .join('');
+};
+
+GEN.Nuke = Pool => {
+    const list = Pool || [];
+    const nuke = {};
+    const f = gene => {
+        const base = gene[0];
+        nuke[base] = nuke[base] || [];
+        nuke[base].push(gene);
+        return gene;
+    }
+    list.map(f);
+    return nuke;
+};
+
+GEN.MakeNuke = options => {
+    const level = options && options.level || 1;
+};
+
+
+GEN.MakePool = options => {
+    const size = options && options.size || 1;
+    const base = options && options.base || '';
+    return Array(size)
+        .fill(base)
+        .map(GEN.Gene);
+}
+
+
+
+
+
+log( GEN.Gene() );
+log( GEN.Gene() );
+log( GEN.Gene() );
+
+log( GEN.MakePool() );
+log( GEN.MakePool({size:3,base:'A'}) );
+log( GEN.MakePool({size:9}) );
+
+let pool = GEN.MakePool({size:9})
+log( pool );
+log( GEN.Nuke(pool) );
+
+let poo2 = [ GEN.Gene('A'), GEN.Gene('B'), GEN.Gene('C') ];
+log( poo2 );
+log( GEN.Nuke(poo2) );
+log( GEN.Nuke() );
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ runtime
+        log('gene ball home20 runtime');
+        /** / // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    </script>
+
+</body>
