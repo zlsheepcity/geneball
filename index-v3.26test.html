@@ -1,6 +1,5 @@
 <title>game configs</title>
 <script>
-
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     const kanbanTaskStory = {
         data: '',
@@ -24,6 +23,9 @@
             state: [kanbanTaskState],
         },
     };
+    const TASKS = [
+        {title: 'Investigate incoming ball'},
+    ].map( o=> ({...o, ...kanbanTask, ...o}) );
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     const KanbanBoard = function(dna) {
         const {
@@ -56,7 +58,7 @@
             console.log('takeTask:', tt({t:1}))
             console.log('takeTask:', tt({t:2}))
             console.log('giveList:', tl().length, tl())
-            console.log('takeTask:', tt({t:3}))
+            console.log('takeTask:', tt(TASKS[0]))
             console.log('giveList:', tl().length, tl())
             console.log('Task I2:', tg({i:2}))
             console.log('TaskI99:', tg())
