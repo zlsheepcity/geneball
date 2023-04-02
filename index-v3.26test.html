@@ -26,27 +26,34 @@
     const TASKS = [
         {title: 'Investigate incoming ball'},
     ].map( o=> ({...o, ...kanbanTask, ...o}) );
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     const KanbanBoard = function(dna) {
         const {
             O:DNA,
             tasks,
             story,
-        }=( nuke => Object.assign( this,dna,{nuke} ))({
-            O:this,
+        }=( model => Object.assign(this, model, dna)
+        )({ O:this,
             tasks: [],
             story: [],
-         ...dna.nuke,
-             }).nuke;
+        });
         DNA.test =O=> dna.test && dna.test(O||DNA)
         DNA.makeTask =O=> ({...O, ...kanbanTask, ...O})
-        DNA.takeTask =O=> (l=>({O,i:--l}))(tasks.push(DNA.makeTask(O)))
+        DNA.takeTask =O=> pushAndReturn(O)([tasks, DNA.makeTask])
         DNA.giveTask =O=> tasks[O?.i||0]
         DNA.giveList =O=> tasks
         DNA.dsAssignee =O=> O?.state?.assignee ||0
         DNA.isAssignee =O=> O?.state?.assignee !==false
         DNA.isResolved =O=> O?.state?.resolved !==false
-
+        const { pushAndReturn } = {
+            pushAndReturn:( //=> pushAndReturn(item)([list,constructor])
+                ([D,C])=> O=> ([b,c,d])=> (d||D(O))(b.push((c||C)(O)))
+            )([
+                O=> i=> ({ ...O, i:--i }), // <= default return format
+                O=> O,                     // <= default item constructor
+            ]),
+        }
     };
     let KB = new KanbanBoard({
         test:me => {

@@ -32,7 +32,8 @@ const Bumba = function (dna) {
 
 /** /
 
-const Party = function (dna) {
+const Party = function
+(dna) {
     const Party = Object.assign(this, new GMO(), dna)
     Party.Bumba = {}
     Party.Sheep = {}
