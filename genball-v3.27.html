@@ -1,0 +1,534 @@
+<script>
+    let help = {T:'Help',V:'v4.4',S:'Dev'}
+</script>
+abb app bar
+bin com cut
+dem dev ent
+err fuu goo
+<script> // 4.4
+
+const AcidFlatChars = acid => (F=> OO=> F(OO) )(OO=> [...OO.join('')] )([...acid||""])//['G']
+const AcidCharacter = acid => (F=> AcidFlatChars(acid).reduce(F,{}) )((O,G)=>({...O,[G]:(O[G]||0)+1}))//{G:1}
+const AcidCharCount = acid => char=> AcidCharacter(acid)[char] ||0 //0
+
+const GENSources = {
+    protein: {
+    //PowerAcid: RNA=> RNA?.nuke?.acid||[],
+      PowerChar: RNA=> G=> (A=> AcidCharCount(A)(G) )(RNA?.nuke?.acid||[]),
+    },
+}
+const GMOFactory = function GMO(dna) {
+  let DNA = [this, {}, dna];
+  let RNA = Object.assign(...DNA)
+  let GEN = RNA.GEN
+  RNA.NUKESEED ={
+      acid: [],
+      char: '',
+      name: '',
+  };
+  RNA.nuke = {...RNA.NUKESEED}
+};
+const GENLibrary = function(dna) {
+  let DNA = [this, GENSources, dna]
+  let RNA = Object.assign(...DNA)
+  RNA.GMO = GMOFactory
+  RNA.LOG = console.log
+  RNA.Profile = O=> RNA.LOG(RNA)
+  RNA.Polymerase = O=> RNA
+  RNA.Ribosome = O=> !!RNA
+}
+const GEN = new GENLibrary()
+
+</script>
+Webpack project with React App
+- webpack docs
+- App developer manual
+
+/** ADF
+132 231 330
+321 303 312
+033 213 123
+**/
+//CHAR X
+//GENE XXX
+//ACID [XXX,XXX,XXX]
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+const PickListItemIndex = list => Math.floor( Math.random()*list.length )
+const PickListItem = list => list[PickListItemIndex(list)]
+const MakeListSafe  = (list,skip) => list.filter(item=>!skip.includes(item))
+const UT = {
+  PickListItemIndex,
+  PickListItem,
+  MakeListSafe,
+}
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+const CHARSEED = 'ADFGHLMST'
+const CHARPOOL = [...CHARSEED]
+const CHARDATA = {
+    char: {
+        A:'Aina', D:'Dina', F:'Funi',
+        G:'Gina', H:'Hina', L:'Lina',
+        M:'Mina', S:'Sina', T:'Tina',
+        },
+    chars: {
+        A:[...'ABC'], D:[...'D'  ], F:[...'FU' ],
+        G:[...'G'  ], H:[...'HJ' ], L:[...'L'  ],
+        M:[...'M'  ], S:[...'S'  ], T:[...'T'  ],
+        },
+    charm: {
+        A:1132, D:1231, F:1330,
+        G:1321, H:1303, L:1312,
+        M:1033, S:1213, T:1123,
+        },
+    chado: {
+        A:[
+          { T:'Content CRM' },
+          { T:'Update config' },
+          { T:'Automized deploy' },
+          ],
+          D:[
+            { T:'Experienced trick' },
+            { T:'HotFix' },
+            { T:'Skip check' },
+            ],
+            F:[
+              { T:'Cheat' },
+              { T:'Push master' },
+              { T:'Discuss' },
+              ],
+        G:[
+          { T:'Block issue' },
+          { T:'Outsource' },
+          { T:'Demo presentation' },
+          ],
+          H:[
+            { T:'Keep' },
+            { T:'Develop' },
+            { T:'Skip Reports' },
+            ],
+            L:[
+              { T:'Delegate' },
+              { T:'Use libs' },
+              { T:'Full test' },
+              ],
+        M:[
+          { T:'Rush' },
+          { T:'Block' },
+          { T:'Documentation' },
+          ],
+          S:[
+            { T:'Deep view' },
+            { T:'Research' },
+            { T:'Detailed check' },
+            ],
+            T:[
+              { T:'Reject' },
+              { T:'Refactoring' },
+              { T:'Backlog' },
+              ],
+    }, // chado
+}; // CHARDATA eof
+const CharExctract = (char,data)=> (O,key)=>({...O, [key]:data[key][char] })
+const CharRibosome = G=> D=> Object.keys(D).reduce(CharExctract(G[0],D),{G}) //(CHAR)(DATA)
+const HarmRibosome = G=> D=> ({harm:[...`${D['charm'][G]}`].slice(1).map(x=>x*1)}) //(CHAR)(DATA)
+const MakeRibosome = G=> D=> ({ //(CHAR)(DATA)
+  A:{ make:[
+      { T:'Content CRM' },
+      { T:'Update config' },
+      { T:'Automized deploy' },
+      ],
+      profile: 'ABC',
+    },
+    D:{ make:[
+        { T:'Experienced trick' },
+        { T:'HotFix' },
+        { T:'Skip check' },
+        ],
+      },
+      F:{ make:[
+          { T:'Cheat' },
+          { T:'Push master' },
+          { T:'Discuss' },
+          ],
+          profile: 'Funicia',
+        },
+  G:{ make:[
+      { T:'Block issue' },
+      { T:'Outsource' },
+      { T:'Demo presentation' },
+      ],
+    },
+    H:{ make:[
+        { T:'Keep' },
+        { T:'Develop' },
+        { T:'Skip Reports' },
+        ],
+        profile: 'cold',
+      },
+      L:{ make:[
+          { T:'Delegate' },
+          { T:'Use libs' },
+          { T:'Full test' },
+          ],
+        },
+  M:{ make:[
+      { T:'Rush' },
+      { T:'Block' },
+      { T:'Documentation' },
+      ],
+    },
+    S:{ make:[
+        { T:'Deep view' },
+        { T:'Research' },
+        { T:'Detailed check' },
+        ],
+      },
+      T:{ make:[
+          { T:'Reject' },
+          { T:'Refactoring' },
+          { T:'Backlog' },
+          ],
+        },
+})[G[0]];// MakeRibosome eof
+const GEM = Object.values(CHARDATA.char).reduce(
+  (OO,GEM)=> (G=> ({
+    ...OO,
+      [G]: {
+        ...CharRibosome(G)(CHARDATA),
+        ...HarmRibosome(G)(CHARDATA),
+        ...MakeRibosome(G)(CHARDATA),
+      },
+  }))(GEM[0]), {} );
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+const CharPick = ({pool}) => {
+  let list = pool || CHARPOOL
+  let char = UT.PickListItem(list)
+  return char;
+};
+const PoolSafe = ({pool,skip}) => {
+  let source = pool || CHARPOOL
+  let except = skip || []
+  let result = UT.MakeListSafe(source,except)
+  return [...result];
+};
+const GeneMake = ({pool,skip}) => {
+  let source = pool || [...CHARPOOL]
+  let except = skip || []
+  let P = E => PoolSafe({pool:source,skip:[...except,...E]})
+  let A = CharPick({ pool:P([]) })
+  let B = CharPick({ pool:P([A]) })
+  let C = CharPick({ pool:P([A,B]) })
+  return [A,B,C].join('')
+};
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+const ProfileViewer =G=> {
+  console.group(`${G} Profile`)
+  console.log('Profile:', GEM[G].profile)
+  console.log('History:', GEM[G].history)
+  console.log('Actions:', GEM[G].make.map(O=>O.T).join(', '))
+  console.groupEnd()
+};
+const VariantViewer =O=> {
+  let GnA = GeneMake({})
+  let GnAMake = [...GnA].map( (G,i)=>GEM[G].chado[i].T )
+  let GnAHarm = [...GnA].map( (G,i)=>GEM[G].harm[i] ).join('')
+  let GnB = 'XXX'
+  GnB = [GnB[0],GnB[1],GnB[2]].join('')
+  let Option0 = PoolSafe({skip:[...GnA,...GnB]})
+  let Select0 = CharPick({pool:Option0})
+  GnB = [Select0,GnB[1],GnB[2]].join('')
+  let Option1 = PoolSafe({skip:[...GnA,...GnB]})
+  let Select1 = CharPick({pool:Option1})
+  GnB = [GnB[0],Select1,GnB[2]].join('')
+  let Option2 = PoolSafe({skip:[...GnA,...GnB]})
+  let Select2 = CharPick({pool:Option2})
+  GnB = [GnB[0],GnB[1],Select2].join('')
+  let GnBMake = [...GnB].map( (G,i)=>GEM[G].chado[i].T )
+  let GnBHarm = [...GnB].map( (G,i)=>GEM[G].harm[i] ).join('')
+  let ReportH = [...GnA].map( (G,i)=>`${GEM[G].harm[i]}:${GEM[GnB[i]].harm[i]}` )
+  //let ReportF = ReportH.reduce( (f,s)=>f*1+s[2]*1-1*s[0], 1)>0
+  let ReportF = ReportH.reduce(
+    (T,S)=>(([A,x,B]) => F =>F(A,B)+T)([...S])((A,B)=>(A>B?-1:A<B?1:0)),
+//    (T,S)=>{
+//      return 
+//    }
+//    (f,s)=>{
+//      const [a,x,b] = [...s]
+//      console.log('ReportF', a,b, a>b?-1:a<b?1:0 )
+//      return f*1+(s[2]*1)-(1*s[0])
+//    },
+    1)>0
+  console.group('Touch')
+    console.log([...GnA].map(G=>GEM[G].char).join('·'),GnAHarm, GnAMake)
+    console.log(Option0,'·',Select0)
+    console.log(Option1,'·',Select1)
+    console.log(Option2,'·',Select2)
+    console.log([...GnB].map(G=>GEM[G].char).join('·'),GnBHarm,GnBMake)
+    console.log(ReportF?'WIN':'LOS',ReportH)
+    ProfileViewer(Select0)
+    ProfileViewer(Select1)
+    ProfileViewer(Select2)
+  console.groupEnd()
+}; // VariantViewer eof
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+console.log('GEMS:',GEM)
+VariantViewer()
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+const ATF_MATRIX = {
+  A:132, D:231, F:330,
+  G:321, H:303, L:312,
+  M:033, S:213, T:123,
+}
+const ATF = {
+  A:{G:1,F:3,H:2}, D:{G:2,F:3,H:1}, F:{G:3,F:3,H:0},
+  G:{G:3,F:2,H:1}, H:{G:3,F:0,H:3}, L:{G:3,F:1,H:2},
+  M:{G:0,F:3,H:3}, S:{G:2,F:1,H:3}, T:{G:1,F:2,H:3},
+}
+
+
+
+/*
+
+
+const acidseed = 'Oina Tina Sina Mina Hina Gina Aina Funi'
+const acid = acidseed.split(' ')
+const aminacid = acid.map(o=>o[0])//.join('')
+
+const uIndexPick = list => Math.floor( Math.random()*list.length )
+const acidPick = (acid) => acid[uIndexPick(acid)]
+const acidMix3 = (acid = aminacid) => {
+    const ne = taken => o=>taken!==o
+    const take = acidPick(acid)
+    const make = acidPick(acid.filter(ne(take)))
+    const give = acidPick(acid.filter(ne(take)).filter(ne(make)))
+    return [take,make,give].join('·')
+}
+
+*/
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // Create
+    // Reveal
+    // Update
+    // Delete
+    // Read
+    // Reload
+    // Review
+    // Reread
+    // Report
+    // Raiden
+/*
+    GM.Serve()
+    MTO: {M:4,T:2,O:8,H:2,L:6,G:2}
+    HLG: {M:7,T:4,O:2,H:9,L:2,G:6}
+
+    do { Touch() }
+    while GM.active
+    const Touch =O=> {
+        let bumba
+            squad
+            touch
+            rules
+        if (touch) Get() else Serve()
+        Update(bumba,{progress,assignee})
+        {
+            progress: touch,
+            assignee: squad[field][touch]
+        }
+        Map rules.MakeEventsHappen
+            event => {b,s,t} => Update(bumba,{comment})
+        Commit(bumba)
+        //
+    Party
+        squad: [[O],[O]],
+        score: [0,0],
+        bumba: {O},
+        stage: [],
+        nuke
+            .stage: [],
+        Stage
+    services
+        StageReveal ,// stage[last]
+        StageCreate ,// stage.push
+        StageFinish ,// stage[last] => Stage.Update({finish})
+        PartyWelcome // nuke.dna -> transcription party
+        SquadRegister
+        SquadReorder // ([a, ...bc]) => ([...bc, a])
+        TargetSheep
+
+    Stage
+        transcription (dna)
+            bumba: {O},
+            score: [0,0],
+            field: 0,
+            touch: 0,
+            touchCounter: 0,
+            ...dna
+        DNA.transcription =
+        dna => ({
+            ...Object.assign(this, model, dna)
+        });
+
+        Touch
+    services
+        Welcome
+            set nuke = nuke.dna
+
+        ScoreUpdate
+        TouchCreate
+        TouchResolve
+            Party.SquadReorder(Squad)
+            Stage.StageIsComplete
+        StageReset (dna)
+        StageIsComplete // score >= 21
+    
+    Touch
+    services
+        Squad: Party.Squad[field]
+        Sheep: Party.Squad[field][touch]
+    run
+    const Touch =O=> {
+        // fin
+        Stage.ScoreUpdate(score)
+        Stage.TouchResolve()
+    }
+    const Touch =O=> {
+        set
+            sheep:squad
+        
+        KB.GetTask({assignee})
+        UI.ProvideTouch({Stage})
+        touchProvide
+        touchRequest
+        touchRespons
+        resolve
+            set touch
+    };
+
+
+*/
+
+/*
+
+let DNA:{[key:string]:any} = {}
+let DNA = this
+let Transcription 
+DNA.transcription =
+dna => ( seed => Object.assign(this, seed, dna);
+dna => ({
+    ...Object.assign(this, model, dna)
+});
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    const Stage = function (dna) {
+        let Transcription = rna => ( //: GEN.T
+            model => Object.assign(this, model, {O:this,model})
+        )({ //: GEN.M
+            bumba: {},
+            score: [0,0],
+            field: 0,
+            touch: 0,
+            touchCounter: 0,
+         ...(dna||{}),
+         ...(rna||{}),
+        });
+        const { O:Stage, bumba:Bumba } = Transcription({Transcription})
+        Stage.History =O=> console.log('Stage.History:', O);
+        Stage.Profile =O=> console.log('Stage.Profile:', Stage);
+        Stage.Welcome =O=>
+            ( ([DNA]) =>{
+                DNA.Transcription({...DNA.model, ...O})
+                DNA.History({D:'Welcome Stage', O:DNA})
+            })([Stage]);
+        Stage.ScoreUpdate =O=>
+            ( ([DNA]) =>{
+                DNA.score = (([q,p]) => ([d,b]) => [ !d?q:q+1, !b?p:p+1 ])(DNA.score)(O.score)
+                DNA.History({D:'Current Score', O:DNA.score})
+            })([Stage]);
+    };
+
+    const kanbanTaskStory = {
+        data: '',
+    };
+    const kanbanTaskComment = {
+        name: '',
+    };
+    const kanbanTaskState = {
+        estimate: 0,
+        assignee: false,
+        resolved: false,
+        progress: 'backlog', //todo//inprogress//done//
+        comments: [kanbanTaskComment],
+    };
+    const kanbanTask = {
+        story: [kanbanTaskStory],
+        state: [kanbanTaskState],
+        nuke:{
+            type: 'feat', //bugs//
+            init: kanbanTaskState,
+            state: [kanbanTaskState],
+        },
+    };
+    const { pushAndReturn } = {
+        pushAndReturn:( //=> pushAndReturn(item)(list,constructor)
+            ([R,C])=> O=> ([b,c,d])=> (d||R(O))(b.push((c||C)(O)))
+        )([
+            O=> i=> ({ ...O, i:--i }), // <= default return format
+            O=> O,                  // <= default item constructor
+        ]),
+    }
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    const KanbanBoard = function(dna) {
+        const {
+            O:DNA,
+            tasks,
+            state,
+        }=( model => Object.assign(this, model, dna)
+        )({ O:this,
+            tasks: [],
+            state: [],
+         ...dna
+        });
+        DNA.test =O=> dna.test && dna.test(O||DNA)
+        DNA.makeTask =O=> ({...O, ...kanbanTask, ...O})
+        DNA.takeTask =O=> ( p=> ([b,d]) => (p)(b.push(d(O))) )(i=>({O,i:--i}))([tasks, DNA.makeTask])
+        DNA.takeTask =O=> pushAndReturn(O)([tasks, DNA.makeTask, 0])
+        DNA.giveTask =O=> tasks[O?.i||0]
+        DNA.giveList =O=> tasks
+        DNA.dsAssignee =O=> O?.state?.assignee ||0
+        DNA.isAssignee =O=> O?.state?.assignee !==false
+        DNA.isResolved =O=> O?.state?.resolved !==false
+
+    };
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    const TASKS = [
+        {title: 'Investigate incoming ball'},
+    ].map( o=> ({...o, ...kanbanTask, ...o}) );
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    const KanbanBoardOld = function(dna) {
+        const {
+            O:DNA,
+            tasks,
+            story,
+        }=( nuke => Object.assign( this,dna,{nuke} ))({
+            O:this,
+            tasks: [],
+            story: [],
+         ...dna.nuke,
+             }).nuke;
+        DNA.test =O=> dna.test && dna.test(O||DNA)
+        DNA.makeTask =O=> ({...O, ...kanbanTask, ...O})
+        DNA.takeTask =O=> (l=>({O,i:--l}))(tasks.push(DNA.makeTask(O)))
+        DNA.giveTask =O=> tasks[O?.i||0]
+        DNA.giveList =O=> tasks
+        DNA.dsAssignee =O=> O?.state?.assignee ||0
+        DNA.isAssignee =O=> O?.state?.assignee !==false
+        DNA.isResolved =O=> O?.state?.resolved !==false
+
+    };
+
+*/
+</script>

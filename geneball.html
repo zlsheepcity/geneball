@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gene ball</title>
+    <script>
+        const log =(...msg)=> console.log(   ...msg)
+        const msg =    msg => console.log('..', msg)
+        const tab =    msg => console.table({...msg})
+    </script>
+</head>
+<body>
+    <pre>
+        ABPT
+        RGFH
+    </pre>
+    <script src="geneball--libs.js"></script>
+    <script>
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ The World
+
+        const NobleWorld = function NobleWorldFactory
+        (dna) {
+            const World = Object.assign(this,dna)
+            World.Story = [World.name||'MainController',{dna}]
+            World.SayHi = f=> log({Hi:World.Story[0], ...World})
+
+            World.GivesPassportFor = data => {
+                let name = data.name || data.toString() || 'Aita'
+                return {name}
+            };
+
+            World.DisplaysNuke = (...o) => o.map( oO =>{
+                console.group(oO.name)
+                for (i in oO.nuke) log(i, oO.nuke[i])
+                console.groupEnd(oO.name)
+            });
+
+        };
+        let TheWorld = new NobleWorld()
+        //  TheWorld.SayHi()
+
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ The Person
+
+        const NoblePerson = function
+        (dna) {
+            const Noble = Object.assign(this,dna)
+            Noble.Story = [Noble.name||'Was born Noble',{dna}]
+            Noble.SayHi = f=> log({Hi:Noble.Story[0], ...Noble})
+            Gen.Welcome(Noble)
+        };
+
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+        const NobleSheep = function NobleSheepFactory
+        (...genes) {
+            const Noble = Object.assign(this, ...genes)
+            Noble.Profile = f => log({NobleSheep:'·',...Noble})
+            Noble.Display = f => {
+                console.group(['NobleSheep',Noble.name || ''].join(': '))
+                Noble.Profile()
+                for (i in Noble.nuke) log(i, Noble.nuke[i])
+                console.groupEnd()
+                }
+            Noble.nuke = genes.nuke || GEN.Nuke()
+
+            Noble.NukeFill = (dna, base) => {
+                const  r = Object.keys(dna.nuke).slice(0, GEN.PACE);
+                const  g = x => x.reduce(f, {})
+                const  f = (a,b) => (a[b]=h(b),a);
+                const  h = G => [GEN.Gene(G)];
+                dna.nuke = {...dna.nuke, ...g(r)}
+                //dna.nuke = Object.keys(dna.nuke).map(G=>GEN.Gene(G))
+                }
+
+            Noble.GenePower = G => {
+                const NUKE = Noble.nuke
+                const GPower = g =>
+                    Object.keys(NUKE).reduce(
+                        (power, key) => power +
+                        (NUKE[key]
+                            .join('')
+                            .match(new RegExp(g,"g"))
+                            || []
+                        ).length
+                        ,0);
+                return [...G].reduce( (p,g) => p+GPower(g) , 0)
+            };
+
+            // run
+            Noble.NukeFill(Noble)
+        };
+
+        /**/ // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ End
+
+/*
+RGFH
+MBPT
+IAE
+
+arr4 = [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]];
+arr4.flat(Infinity);
+
+sheep
+ship
+    nuke
+        rgfh
+        e:  exp, game played
+        a:  atf, focus points
+        i:  ini, initiative
+        o:  empty
+    pool
+        
+
+        s:  svg
+            mods:
+                r*r*:
+
+*/
+
+    </script>
+    <!-- 
+    <script>
+        let org = {
+            M: []
+          , B: []
+          , P: []
+          , T: []
+        }
+        GameActions = {
+            R: G => {
+                // G[0]
+                // G[3]
+                // G[2]
+                if (G[3]==='R') console.log('RR Double Run')
+            }
+        }
+        GameAction['R']
+        let org = {
+            R: [ 'RGFH' , 'HGFH' ],
+            G: [ 'GGFH' ],
+            F: [ 'FGFH' ],
+            H: [ 'HGFH' ],
+        }
+        let org = [
+            ['MRRR', 'RGFH']
+          , ['BGGG', 'GGFH']
+          , ['PFFF', 'FGFH']
+          , ['THHH', 'HGFH']
+        ]
+        const A = {
+            DNA : 'MBPT'
+          , MAP : 'RGFH'
+        }
+        const MBPT = 'MBPT';
+        const RGFH = 'RGFH';
+        let gene = 'RGFH';
+        let root = MBPT[RGFH.indexOf(gene[0])];
+        let next = 'HGFH'
+
+        const godmode = {
+            g: i => gene[i]
+          , G: gene
+        }
+        let { g } = godmode;
+        
+        let root = MBPT[RGFH.indexOf(G[1])];
+
+        /**/gene = 'RGFH'
+        let pair = {
+            init : gene[0] + gene[1]
+          , acid : gene[2] + gene[3]
+          , exit : gene[4] + gene[5]
+        }
+        let set1 = [ 'init', 'acid', 'exit' ]
+
+        let  = 'RGFH'
+
+        let fun1 = gene => {
+            
+        }
+        let gene = {
+            init : 'A',
+            acid : 'RGFH',
+            exit : '0'
+        }
+        let gene = acid => {
+            
+        }
+    </script>
+     -->
+</body>
+</html>

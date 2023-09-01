@@ -102,7 +102,13 @@ const GemCollection = function (source) {
   let exctract = (char,data)=> (O,key)=>({...O, [key]:data[key][char] })
   let ribosome = (G)=> (D)=> Object.keys(D).reduce(exctract(G[0],D),{G})
   let Gem = seedpool.reduce((O,G)=>({...O,[G]:ribosome(G)(source)}), {})
-  Object.assign(this,Gem)
+  Object.assign(this,Gem);
+//char:   'Aina',
+//chage:   13,
+//charm:   1132,
+//chars:   ['A', 'B', 'C'],
+//actions: [{}],
+//profile: {},
 };
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 const GEMDATA = { ...protons, actions, profile };
