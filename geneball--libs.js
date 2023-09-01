@@ -99,8 +99,8 @@ const GeneticsLibrary = function
 
     // oO{RGFH} + {RGFH} = oO{RGFH}
     Gen.NukeFill = oO => fill => {
-        const acid = G => Gen.AcidWeed([...oO.nuke[G], ...fill[G]])
-        return Object.keys(fill).map( G=> {oO.nuke[G] = acid(G)} );
+        const acid = G => Gen.AcidWeed([...oO.nuke[G],...fill[G]]);
+        return Object.keys(fill).map( G=> {oO.nuke[G] =  acid(G)});
     }
 
 
