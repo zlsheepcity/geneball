@@ -8,3 +8,62 @@
   console.log(GEM);
   console.log('GEM.A', GEM.A);
 </script>
+
+
+<!-- UI Layout 9.11 -->
+<section data-component="SectionGeomap">
+    <style>
+        .layoutSectionGeomap {}
+        .layoutSectionGeomap .grid-wrap {
+            display: grid;
+            grid-gap: 1em;
+            grid-template-columns: repeat(3,1fr);
+        }
+        .layoutSectionGeomap .grid-wrap>* {
+            aspect-ratio: 1;
+        }
+    </style>
+    <style>
+        .layoutSectionGeomap .grid-wrap>* ,
+        .mockbox {
+            background-image: repeating-linear-gradient(
+                135deg,
+                var(--c1),
+                var(--c1) 0.75rem,
+                var(--c2) 0.75rem,
+                var(--c2) 1.50rem);
+          --c1: hsla( 222 44% 44% / 0.124 );
+          --c2: hsla( 222 44% 44% / 0.0124 );
+
+            border:  0;
+            margin:  0;
+            width:   var(--width,100%);
+            height:  var(--height,auto);
+            display: grid;
+            place-items: center;
+
+            font-size: 1rem;
+            font-family: monospace;
+            color: var(--c1, currentColor);
+        }
+    </style>
+    <section class="layoutSectionGeomap">
+        <div class="grid-wrap">
+            <article>
+                A
+            </article>
+            <article>
+                B
+            </article>
+            <article>
+                C
+            </article>
+        </div>
+    </section>
+    <script>
+        const renderSectionGeomap = f => {
+            
+        };
+        renderSectionGeomap();
+    </script>
+</section>
