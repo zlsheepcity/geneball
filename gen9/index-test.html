@@ -1,4 +1,12 @@
 <title>GEN9</title>
+<style display-source>
+    [display-source] {
+        display:     block;
+        padding:     0 1em 2em;
+        font-family: monospace;
+        white-space: pre-wrap;
+    }
+</style>
 
 <script src="GEN4.js"></script>
 <script>GeneticsLibraryTest()</script>
@@ -7,6 +15,137 @@
 <script>
   console.log(GEM);
   console.log('GEM.A', GEM.A);
+</script>
+
+<script display-source>
+    const GeneticsLibraryGEN6 = function (injectDNA){
+        let GEN = Object.assign(this, injectDNA);
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Seed
+
+        GEN.v = '23.9.13'
+        GEN.name = 'GEN6'
+        GEN.SEED = 'GSLMTH' // 'RGFH'
+        GEN.MASK = 'XXX'
+        const UTT = {
+            RND: C=> !C? Math.random() : Math.floor(Math.random()*C)
+        };
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Root
+
+        // (G)(3) => 'GGF'
+        GEN.geneMake = base => level => {
+            const  A = 'X'.repeat(level||0)||GEN.MASK;
+            const  B = GEN.SEED;
+            const  f = x => x[UTT.RND(x.length)];
+            const  g = [...A].map((X,I)=>!I?base||f(B):f(B));
+            return g.join('');
+            };
+
+        // (G)(3) => ['GRF','GGT','GTH']
+        GEN.acidMake = base => level => {
+            const  A = Array(level||0).fill(0);
+            const  f = x => GEN.geneMake(base)();
+            const  g = A => A.map(f);
+            return g(A);
+            };
+
+        // (G)(3) => {G:['GRF','GGT','GTH']}
+        GEN.nukeMake = base => level => {
+            const  B = [...base||GEN.SEED];
+            const  a = G => GEN.acidMake(G)(level);
+            const  f = (N,G) => (N[G]=a(G),N);
+            const  g = B => B.reduce(f,{});
+            return g(B);
+            };
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Count
+
+        // (G)(['GGG','GHT']) => 4
+        GEN.acidPower = base => acid =>
+            [...base].reduce(
+                (power,g) => power+
+                (acid.join('')
+                    .match(new RegExp(g,'g')) || [])
+                        .length
+                ,0);
+
+
+        GEN.nukePowerMap = base => nuke => {
+            return [...base||Object.keys(nuke)].reduce(
+                (N,G) => (N[G]=GEN.acidPower(G)(nuke[G]||[]),N)
+                    ,{});
+        }
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    };
+</script>
+<script display-source>
+    const runDestiny = f => {
+        let GEN = new GeneticsLibraryGEN6();
+        GEN.SEED = 'GSLMTH';
+
+      //const createRandomNuke
+
+        const ggg = GEN.geneMake('G')(3);
+            console.log('GeneticsLibraryGEN6',ggg)
+        const acid1 = GEN.acidMake('G')(3);
+            console.log('acid1:')
+            console.log(acid1)
+        const acid2 = GEN.acidMake()(3);
+            console.log('acid2:')
+            console.log(acid2)
+        const nuke1 = GEN.nukeMake()();
+        const nuke2 = GEN.nukeMake('GF')();
+        const nuke3 = GEN.nukeMake()(3);
+            console.log('nuke1:')
+            console.log(nuke1)
+            console.log('nuke2:')
+            console.log(nuke2)
+            console.log('nuke3:')
+            console.log(nuke3, GEN.nukePowerMap()(nuke3))
+
+        const UTT ={
+            RND:C => !C? Math.random() : Math.floor(Math.random()*C),
+        };
+        const geneSeed = [...'GSLMTH'];
+        const nukeSeed = [...geneSeed].reduce((N,G)=>({...N,[G]:[]}),{});
+        const nukeMake = rna => ({...nukeSeed, ...rna});
+        const nukePush = rna => N=> Object.keys(rna)
+            .reduce((N,G)=> ({...N,[G]:N[G].push(...rna[G])}),N);
+
+        // G => 'GST'
+        const geneMake = base => {
+            const  r = geneSeed;
+            const  g = r => f(h)+f(h+r)+f(h+r);
+            const  f = x => x[UTT.RND(x.length)];
+            const  h = base || f(r);
+            return g(r);
+            };
+
+        // (3)(G) => ['GRFH','GHFR','GFHR']
+        const acidMake = level => base => {
+            const r = Array(level||0).fill(0)
+            const g = r => r.map(f)
+            const f = x => GEN.Gene(base)
+            return g(r);
+            };
+
+        const nukeCreateRandom = dna => {
+            const acid = level => base => {
+                const r = Array(level||0).fill(0)
+                const g = r => r.map(f)
+                const f = x => GEN.Gene(base)
+                return g(r);
+                };
+            const nuke = nukeMake();
+        };
+
+        let x = nukeMake({G:['B']});
+        console.log(x);
+        nukePush({G:['A']})(x);
+        console.log(x);
+    };
+    runDestiny();
 </script>
 
 

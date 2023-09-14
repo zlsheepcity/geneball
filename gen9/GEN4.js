@@ -7,7 +7,7 @@ const GeneticsLibrary = function (injectDNA){
     GEN.name = 'GEN4'
     GEN.SEED = 'RGFH'
     const UTT = {
-        RND: C=> C? Math.floor(Math.random()*C):Math.random(),
+        RND: C=> !C? Math.random() : Math.floor(Math.random()*C)
     };
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Root
