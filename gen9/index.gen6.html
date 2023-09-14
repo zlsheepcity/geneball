@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GEN6</title>
+    <style display-source>
+        [display-source] {
+            display:     block;
+            padding:     0 1em 2em;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<script display-source>
+    const GeneticsLibraryGEN6 = function (injectDNA){
+        let GEN = Object.assign(this, injectDNA);
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Seed
+
+        GEN.v = '23.9.13'
+        GEN.name = 'GEN6'
+        GEN.SEED = 'GSLMTH' // 'RGFH'
+        GEN.MASK = 'XXX'
+        const UTT = {
+            RND: C=>!C? Math.random() : Math.floor(Math.random()*C),
+        };
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Root
+
+        // (G)(3) => 'GGF'
+        GEN.geneMake = base => level => {
+            const  A = 'X'.repeat(level||0)||GEN.MASK;
+            const  B = GEN.SEED;
+            const  f = x => x[UTT.RND(x.length)];
+            const  g = [...A].map((X,I)=>!I?base||f(B):f(B));
+            return g.join('');
+            };
+
+        // (G)(3) => ['GRF','GGT','GTH']
+        GEN.acidMake = base => level => {
+            const  A = Array(level||0).fill(0);
+            const  f = x => GEN.geneMake(base)();
+            const  g = A => A.map(f);
+            return g(A);
+            };
+
+        // (G)(3) => {G:['GRF','GGT','GTH']}
+        GEN.nukeMake = base => level => {
+            const  B = [...base||GEN.SEED];
+            const  a = G => GEN.acidMake(G)(level);
+            const  f = (N,G) => (N[G]=a(G),N);
+            const  g = B => B.reduce(f,{});
+            return g(B);
+            };
+
+        // ([A])([B]) => [A,B]
+        GEN.acidPush = acid => push => acid.push(...push);
+
+        // ({G:[A]})({G:[B]}) => {G:[A,B]}
+        GEN.nukePush = nuke => push =>
+            Object.keys(push).reduce(
+                (N,G)=> ({...N,[G]:GEN.acidPush(push[G])})
+                    ,nuke);
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Lovers
+
+        // (['GGG','GHT'])(G) => 4
+        GEN.acidLove = acid => base =>
+            [...base].reduce(
+                (love,g) => love+
+               ((acid||[]).join('')
+                    .match(new RegExp(g,'g')) || [])
+                        .length
+                ,0);
+
+        // ({G:['GGG','GHT']})(G) => 4
+        GEN.nukeLove = nuke => base =>
+            [...base].reduce(
+                (love,g) => love+
+                    Object.keys(nuke).reduce(
+                        (love,T) => love+
+                            GEN.acidLove(nuke[T])(g)
+                ,0),0);
+
+        GEN.nukeLoveMap = nuke => base =>
+            [...base||GEN.SEED].reduce(
+                (N,G) => (N[G]=GEN.nukeLove(nuke)(G),N)
+            ,{});
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Factories
+
+        GEN.GMO = function GMO(dna) {
+            let GMO = Object.assign(this,dna);
+            GMO.zzz = 'dd';
+            GMO.nuke = GEN.nukeMake()();
+            GMO.push = push => GEN.nukePush(GMO.nuke)(push);
+            GMO.love = G => GEN.nukeLove(GMO.nuke)(G);
+            GMO.loveMap = f => {
+                console.log('zzz',GMO.nuke);
+                console.log('zzz',GMO.zzz);
+                GEN.nukeLoveMap(GMO.nuke)();
+            };
+        };
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    };
+</script>
+<script display-source>
+    const runDestiny = f => {
+        let GEN = new GeneticsLibraryGEN6();
+        let Bumba = function Bumba(dna) {
+            let RNA = Object.assign(this,new GEN.GMO(),dna);
+            RNA.nuke = GEN.nukeMake()(1);
+            };
+
+        const bumba = new Bumba();
+        console.log('bumba')
+        console.table(bumba.nuke)
+        console.log(bumba.loveMap())
+
+    };
+    runDestiny();
+</script>
+
+</body>
+</html>

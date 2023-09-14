@@ -58,19 +58,48 @@
             return g(B);
             };
 
-        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Count
+        // ([A])([B]) => [A,B]
+        GEN.acidPush = acid => push => acid.push(...push);
+
+        // ({G:[A]})({G:[B]}) => {G:[A,B]}
+        GEN.nukePush = nuke => push =>
+            Object.keys(push).reduce(
+                (N,G)=> ({...N,[G]:GEN.acidPush(push[G])})
+                    ,nuke);
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Counters
 
         // (G)(['GGG','GHT']) => 4
-        GEN.acidPower = base => acid =>
+        GEN.acidLove = base => acid =>
             [...base].reduce(
-                (power,g) => power+
+                (love,g) => love+
                 (acid.join('')
                     .match(new RegExp(g,'g')) || [])
                         .length
                 ,0);
 
+        // (G)({G:['GGG','GHT']}) => 4
+        GEN.nukeLove = base => nuke =>
+            [...base].reduce(
+                (love,g) => love+
+                    Object.keys(nuke).reduce(
+                        (love,T) => love+
+                            GEN.acidLove(g)(nuke[T])
+                ,0),0);
 
-        GEN.nukePowerMap = base => nuke => {
+//            const  B = base || Object.keys(nuke);
+//            const  A = G => nuke[G].join('')
+//            const lg = (love,g)=> love+ ()
+//        };
+//            [...base].reduce(
+//                (power,g) => power+
+//                (acid.join('')
+//                    .match(new RegExp(g,'g')) || [])
+//                        .length
+//                ,0);
+
+
+        GEN.nukeLoveMap = base => nuke => {
             return [...base||Object.keys(nuke)].reduce(
                 (N,G) => (N[G]=GEN.acidPower(G)(nuke[G]||[]),N)
                     ,{});
@@ -97,12 +126,17 @@
         const nuke1 = GEN.nukeMake()();
         const nuke2 = GEN.nukeMake('GF')();
         const nuke3 = GEN.nukeMake()(3);
-            console.log('nuke1:')
-            console.log(nuke1)
+            console.log('nuke1:', nuke1)
             console.log('nuke2:')
             console.log(nuke2)
-            console.log('nuke3:')
-            console.log(nuke3, GEN.nukePowerMap()(nuke3))
+            console.log('nuke3:', nuke3)
+            console.log('nuke3 love G:', GEN.nukeLove('G')(nuke3))
+            console.log('nuke3 love M:', GEN.nukeLove('M')(nuke3))
+            console.log('nuke3 love GS:', GEN.nukeLove('GS')(nuke3))
+            console.log('nuke3 love MT:', GEN.nukeLove('MT')(nuke3))
+            console.table(nuke3)
+            console.table({nuke3})
+          //console.log(nuke3, GEN.nukePowerMap()(nuke3))
 
         const UTT ={
             RND:C => !C? Math.random() : Math.floor(Math.random()*C),
