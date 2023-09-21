@@ -63,6 +63,12 @@
                 (N,G)=> (N[G]=GEN.acidPush(N[G])(push[G]),N)
                     ,nuke);
 
+        // ({G:[A]})(G) => {G:[A]}
+        GEN.nukeCopy = nuke => base =>
+            [...base||Object.keys(nuke)].reduce(
+                (N,G)=> (N[G]=[...nuke[G]],N)
+                    ,{});
+
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Lovers
 
         // (['GGG','GHT'])(G) => 4
@@ -99,7 +105,6 @@
             Object.assign(this,seed);
         };
 
-        
         GEN.GMO = function GMO(DNA) {
             let GMO = Object.assign(this ,{
                 nuke: new GEN.Nuke({}),
@@ -108,6 +113,7 @@
             // nuke actions
 
             GMO.take = push => GEN.nukePush(GMO.nuke)(push);
+            GMO.make = base => GEN.nukeCopy(GMO.nuke)(base);
 
             // nuke stats
 
@@ -120,32 +126,222 @@
 
             GMO.profile = X => {
                 const e =`X ${GMO.name}`;
-             X? console.groupCollapsed(e)
-              : console.group(e);
+             X? console.group(e)
+              : console.groupCollapsed(e);
                 console.log(GMO);
                 console.table(GMO.nuke);
                 console.table(GMO.love());
                 console.groupEnd();
             };
 
-            // code debt
-
-            GMO.push = push => GEN.nukePush(GMO.nuke)(push);
-          //GMO.love = G => GEN.nukeLove(GMO.nuke)(G);
-            GMO.loveMap = f => {
-                console.log('zzz',GMO);
-                console.log('zzz',this);
-                console.log('zzz',GMO.nuke);
-                console.log('zzz',GMO.zzz);
-                return GEN.nukeLoveMap(GMO.nuke)();
-            };
         };
-
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     };
 </script>
-<script display-source>
+<script>
+    const makeGrowData = f=> {
+        const growData = {
+            nuke:[],
+            love:[],
+        };
+        // preparations
+        let GEN = new GeneticsLibraryGEN6();
+        let Bumba = function Bumba(DNA) {
+            const model = new GEN.GMO(DNA);
+            const bumba = Object.assign(this,model);
+            const level = GEN.nukeMake()(1); // (1) level
+            bumba.take(level);
+            };
+        // setup bumba
+        const bumba = new Bumba({name:'Bumba Lupa'});
+        bumba.datalog = f => {
+            growData.nuke.push(bumba.make());
+            growData.love.push(bumba.love());
+        };
+        // run tests
+        const meA = GEN.nukeMake()(1);
+        const meB = GEN.nukeMake()(1);
+        const meC = GEN.nukeMake()(1);
+        const meD = GEN.nukeMake()(1);
+        bumba.datalog();
+        bumba.profile();
+        bumba.take(meA);
+        bumba.datalog();
+        bumba.profile();
+        bumba.take(meB);
+        bumba.datalog();
+        bumba.profile();
+        bumba.take(meC);
+        bumba.datalog();
+        bumba.profile();
+        bumba.take(meD);
+        bumba.datalog();
+        bumba.profile();
+        console.log('growData',growData);
+        return growData;
+    };
+</script>
+<!-- file: module/outputEmissionChart -->
+<article>
+    <div><canvas id="co2c8-appendEmissionChart"></canvas></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>var pointerEmissionChart = {};</script>
+    <script>
+        const co2c8RenderEmissionChart = () => {
+            const ctx = document.getElementById('co2c8-appendEmissionChart');
+            const growData = makeGrowData();
+            const dataForChart = {
+                loveBaseG: growData.love.map(({G})=>G[0]),
+                loveFullG: growData.love.map(({G})=>G[1]),
+                loveBaseM: growData.love.map(({M})=>M[0]),
+                loveFullM: growData.love.map(({M})=>M[1]),
+                labels: growData.love.map((l,i)=>i),
+            };
+//            const dataForChart = {
+//                emissionTitle: 'CO₂ piesaiste',
+//                volumeTitle: 'Koksnes krāja',
+//                labels: src.map(o=>`${o.year}`),
+//                emissionValues: src.map(o=>o.emissionValue),
+//                emissionInc: src.map(o=>o.co2inc),
+//                volumeValues: src.map(o=>o.volume),
+//            };
+            const datasetPreset = {
+                yAxisID: 'emissionIncY',
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            const l = tooltipItem.dataset.label;
+                            const v = tooltipItem.raw;
+                            return `${l}: ${v} m³`;
+                        },
+                    },
+                },
+              //type: 'bar',
+                type: 'bar',
+                //For 'line':
+                pointRadius: 4,
+                pointHoverRadius: 8,
+                lineTension: 0.2,
+            };
+            if (pointerEmissionChart.destroy) pointerEmissionChart.destroy();
+            pointerEmissionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataForChart.labels,
+                    datasets: [
+//                        {
+//                            label: dataForChart.emissionTitle,
+//                            data: dataForChart.emissionValues,
+//                            type: 'line',
+//                            yAxisID: 'emissionY',
+//                            pointStyle: 'circle',
+//                            pointRadius: 4,
+//                            pointHoverRadius: 8,
+//                            tooltip: {
+//                                callbacks: {
+//                                    label: function(tooltipItem, data) {
+//                                        const l = tooltipItem.dataset.label;
+//                                        const v = vCurrency(tooltipItem.raw);
+//                                        return `${l}: ${v} €`;
+//                                    },
+//                                },
+//                            },
+//                            lineTension: 0.2,
+//                        },
+                        {
+                            ...datasetPreset,
+                            label: 'G Base',
+                            data: dataForChart.loveBaseG,
+                        },
+                        {
+                            ...datasetPreset,
+                            label: 'G Full',
+                            data: dataForChart.loveFullG,
+                        },
+                        {
+                            ...datasetPreset,
+                            label: 'M Base',
+                            data: dataForChart.loveBaseM,
+                        },
+                        {
+                            ...datasetPreset,
+                            label: 'M Full',
+                            data: dataForChart.loveFullM,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+//                      emissionY: {
+//                        type: 'linear',
+//                        display: true,
+//                        position: 'left',
+//                        beginAtZero: true,
+//                        title: {
+//                            display: false,
+//                            text: '€',
+//                            position: 'top',
+//                            font: {
+//                                size: 20,
+//                            },
+//                        },
+//                        ticks: {
+//                            callback: function(value, index, ticks) {
+//                                return `${vCurrency(value)} €`;
+//                            },
+//                        },
+//                      },
+                      emissionIncY: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        title: {
+                            display: false,
+                            text: 't',
+                            position: 'top',
+                            font: {
+                                size: 20,
+                            },
+                        },
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                return `${value} t`;
+                            },
+                        },
+                      },
+//                      volumeY: {
+//                        type: 'linear',
+//                        display: true,
+//                        position: 'right',
+//                        beginAtZero: true,
+//                        title: {
+//                            display: false,
+//                            text: 'm³',
+//                            font: {
+//                                size: 20,
+//                            },
+//                        },
+//                        ticks: {
+//                            callback: function(value, index, ticks) {
+//                                return `${value} m³`;
+//                            },
+//                        },
+//                        grid: {
+//                          drawOnChartArea: false,
+//                        },
+//                      },
+                    },
+                },
+            });
+        };
+    </script>
+</article>
+<script>
     const runDestiny = f => {
+      //makeGrowData();
+        co2c8RenderEmissionChart();
+
         let GEN = new GeneticsLibraryGEN6();
         let Bumba = function Bumba(DNA) {
             const model = new GEN.GMO();
@@ -156,13 +352,13 @@
             RNA.nuke = new GEN.Nuke({level:3});
             };
         
-        const bumba = new Bumba();
-        const touc1 = GEN.nukeMake()(1);
-        const touc2 = GEN.nukeMake()(1);
-        bumba.take(touc1);
-        bumba.profile();
-        bumba.take(touc2);
-        bumba.profile();
+//        const bumba = new Bumba();
+//        const touc1 = GEN.nukeMake()(1);
+//        const touc2 = GEN.nukeMake()(1);
+//        bumba.take(touc1);
+//        bumba.profile(1);
+//        bumba.take(touc2);
+//        bumba.profile(1);
 
 //            console.log('bumba.take(touch)', bumba);
 //            console.log('bumba.love(G)', bumba.love('G'));
