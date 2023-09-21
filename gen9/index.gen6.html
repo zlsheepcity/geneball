@@ -20,7 +20,7 @@
 
         GEN.v = '23.9.13'
         GEN.name = 'GEN6'
-        GEN.SEED = 'GSLMTH' // 'RGFH'
+        GEN.SEED = 'GSLHTM' // 'RGFH'
         GEN.MASK = 'XXX'
         const UTT = {
             RND: C=>!C? Math.random() : Math.floor(Math.random()*C),
@@ -55,12 +55,12 @@
             };
 
         // ([A])([B]) => [A,B]
-        GEN.acidPush = acid => push => acid.push(...push);
+        GEN.acidPush = acid => push => [...acid,...push]; //acid.push(...push);
 
         // ({G:[A]})({G:[B]}) => {G:[A,B]}
         GEN.nukePush = nuke => push =>
             Object.keys(push).reduce(
-                (N,G)=> ({...N,[G]:GEN.acidPush(push[G])})
+                (N,G)=> (N[G]=GEN.acidPush(N[G])(push[G]),N)
                     ,nuke);
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Lovers
@@ -76,7 +76,7 @@
 
         // ({G:['GGG','GHT']})(G) => 4
         GEN.nukeLove = nuke => base =>
-            [...base].reduce(
+            [...base||GEN.SEED].reduce(
                 (love,g) => love+
                     Object.keys(nuke).reduce(
                         (love,T) => love+
@@ -85,21 +85,59 @@
 
         GEN.nukeLoveMap = nuke => base =>
             [...base||GEN.SEED].reduce(
-                (N,G) => (N[G]=GEN.nukeLove(nuke)(G),N)
+                (N,G) => (N[G]=[
+                    GEN.acidLove(nuke[G])(G),
+                    GEN.nukeLove(nuke)(G),
+                 ],N)
             ,{});
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Factories
 
-        GEN.GMO = function GMO(dna) {
-            let GMO = Object.assign(this,dna);
-            GMO.zzz = 'dd';
-            GMO.nuke = GEN.nukeMake()();
+        GEN.Nuke = function Nuke(DNA) {
+            const {base, level} = DNA||{};
+            const seed = GEN.nukeMake(base)(level);
+            Object.assign(this,seed);
+        };
+
+        
+        GEN.GMO = function GMO(DNA) {
+            let GMO = Object.assign(this ,{
+                nuke: new GEN.Nuke({}),
+                },{...DNA,DNA});
+
+            // nuke actions
+
+            GMO.take = push => GEN.nukePush(GMO.nuke)(push);
+
+            // nuke stats
+
+            GMO.love = G => (N => G
+                       ? GEN.nukeLove(N)(G)
+                       : GEN.nukeLoveMap(N)()
+                       )(GMO.nuke);
+
+            // interface
+
+            GMO.profile = X => {
+                const e =`X ${GMO.name}`;
+             X? console.groupCollapsed(e)
+              : console.group(e);
+                console.log(GMO);
+                console.table(GMO.nuke);
+                console.table(GMO.love());
+                console.groupEnd();
+            };
+
+            // code debt
+
             GMO.push = push => GEN.nukePush(GMO.nuke)(push);
-            GMO.love = G => GEN.nukeLove(GMO.nuke)(G);
+          //GMO.love = G => GEN.nukeLove(GMO.nuke)(G);
             GMO.loveMap = f => {
+                console.log('zzz',GMO);
+                console.log('zzz',this);
                 console.log('zzz',GMO.nuke);
                 console.log('zzz',GMO.zzz);
-                GEN.nukeLoveMap(GMO.nuke)();
+                return GEN.nukeLoveMap(GMO.nuke)();
             };
         };
 
@@ -109,15 +147,39 @@
 <script display-source>
     const runDestiny = f => {
         let GEN = new GeneticsLibraryGEN6();
-        let Bumba = function Bumba(dna) {
-            let RNA = Object.assign(this,new GEN.GMO(),dna);
-            RNA.nuke = GEN.nukeMake()(1);
+        let Bumba = function Bumba(DNA) {
+            const model = new GEN.GMO();
+            const bumba = Object.assign(this,model,DNA);
             };
-
+        let Sheep = function Sheep(dna) {
+            let RNA = Object.assign(this,new GEN.GMO(),dna);
+            RNA.nuke = new GEN.Nuke({level:3});
+            };
+        
         const bumba = new Bumba();
-        console.log('bumba')
-        console.table(bumba.nuke)
-        console.log(bumba.loveMap())
+        const touc1 = GEN.nukeMake()(1);
+        const touc2 = GEN.nukeMake()(1);
+        bumba.take(touc1);
+        bumba.profile();
+        bumba.take(touc2);
+        bumba.profile();
+
+//            console.log('bumba.take(touch)', bumba);
+//            console.log('bumba.love(G)', bumba.love('G'));
+//            console.table(bumba.nuke);
+//        bumba.take(touch);
+//            console.log('bumba.love(G)', bumba.love('G'));
+//            console.log('bumba.love()', bumba.love());
+//            console.table(bumba.nuke);
+//            console.table(bumba.love());
+//        const bumba = new GEN.GMO();
+//        bumba.push(GEN.nukeMake()(1));
+//      //const bumba = new Bumba();
+//        console.log('bumba')
+//        console.table(bumba.nuke)
+//        console.log(bumba.loveMap())
+//        console.log('push', bumba.push(GEN.nukeMake()(2)))
+//        console.table(bumba.nuke)
 
     };
     runDestiny();
