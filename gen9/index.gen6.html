@@ -152,31 +152,52 @@
             const level = GEN.nukeMake()(1); // (1) level
             bumba.take(level);
             };
+        let Sheep = function Sheep(DNA) {
+            const model = new GEN.GMO(DNA);
+            const sheep = Object.assign(this,model);
+            const level = GEN.nukeMake()(3); // (3) level
+            sheep.take(level);
+            };
         // setup bumba
         const bumba = new Bumba({name:'Bumba Lupa'});
+        const sheeA = new Sheep({name:'Sheep Aina'});
+        const sheeB = new Sheep({name:'Sheep Dina'});
         bumba.datalog = f => {
             growData.nuke.push(bumba.make());
             growData.love.push(bumba.love());
         };
+        // run game
+        // welcome bumba
+        bumba.datalog();
+        bumba.profile();
+        // touch run
+        bumba.take( sheeA.make('HM') );
+        bumba.datalog();
+        bumba.profile();
+        // touch get
+        bumba.take( sheeB.make('SG') );
+        bumba.datalog();
+        bumba.profile();
+
         // run tests
-        const meA = GEN.nukeMake()(1);
-        const meB = GEN.nukeMake()(1);
-        const meC = GEN.nukeMake()(1);
-        const meD = GEN.nukeMake()(1);
-        bumba.datalog();
-        bumba.profile();
-        bumba.take(meA);
-        bumba.datalog();
-        bumba.profile();
-        bumba.take(meB);
-        bumba.datalog();
-        bumba.profile();
-        bumba.take(meC);
-        bumba.datalog();
-        bumba.profile();
-        bumba.take(meD);
-        bumba.datalog();
-        bumba.profile();
+//        const meA = GEN.nukeMake()(1);
+//        const meB = GEN.nukeMake()(1);
+//        const meC = GEN.nukeMake()(1);
+//        const meD = GEN.nukeMake()(1);
+//        bumba.datalog();
+//        bumba.profile();
+//        bumba.take(meA);
+//        bumba.datalog();
+//        bumba.profile();
+//        bumba.take(meB);
+//        bumba.datalog();
+//        bumba.profile();
+//        bumba.take(meC);
+//        bumba.datalog();
+//        bumba.profile();
+//        bumba.take(meD);
+//        bumba.datalog();
+//        bumba.profile();
         console.log('growData',growData);
         return growData;
     };
@@ -191,6 +212,8 @@
             const ctx = document.getElementById('co2c8-appendEmissionChart');
             const growData = makeGrowData();
             const dataForChart = {
+                def: growData.love.map(({G,S})=>1*G[1]+1*S[1]),
+                att: growData.love.map(({M,H})=>1*M[1]+1*H[1]),
                 loveBaseG: growData.love.map(({G})=>G[0]),
                 loveFullG: growData.love.map(({G})=>G[1]),
                 loveBaseM: growData.love.map(({M})=>M[0]),
@@ -248,26 +271,26 @@
 //                            },
 //                            lineTension: 0.2,
 //                        },
+//                        {
+//                            ...datasetPreset,
+//                            label: 'G Base',
+//                            data: dataForChart.loveBaseG,
+//                        },
                         {
                             ...datasetPreset,
-                            label: 'G Base',
-                            data: dataForChart.loveBaseG,
+                            label: 'def',
+                            data: dataForChart.def,
                         },
                         {
                             ...datasetPreset,
-                            label: 'G Full',
-                            data: dataForChart.loveFullG,
+                            label: 'att',
+                            data: dataForChart.att,
                         },
-                        {
-                            ...datasetPreset,
-                            label: 'M Base',
-                            data: dataForChart.loveBaseM,
-                        },
-                        {
-                            ...datasetPreset,
-                            label: 'M Full',
-                            data: dataForChart.loveFullM,
-                        },
+//                        {
+//                            ...datasetPreset,
+//                            label: 'M Base',
+//                            data: dataForChart.loveBaseM,
+//                        },
                     ],
                 },
                 options: {
