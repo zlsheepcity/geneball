@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tetra q</title>
+    <style display-source>
+        [display-source] {
+            display:     block;
+            padding:     0 1em 2em;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<script display-source>
+    const shape = {
+          A:[
+            [1,1],
+            [1,1],
+        ],D:[
+            [1,1,1,1],
+        ],F:[
+            [1],
+            [1],
+            [1],
+            [1],
+        ],
+        G:[
+            [1,1,0],
+            [0,1,1],
+        ],
+        H:[
+            [1,0],
+            [1,1],
+            [0,1],
+        ],
+        S:[
+            [1,1,1],
+            [0,0,1],
+        ],
+        T:[
+            [1,0,0],
+            [1,1,1],
+        ],
+        M:[
+            [1,1],
+            [0,1],
+            [0,1],
+        ],
+        L:[
+            [1,0],
+            [1,0],
+            [1,1],
+        ],
+    };
+    const shapeProfile = shape => {
+        const makePool = shape =>
+            shape.map(line =>
+                line.map(q => q?'x':'o')
+                    .join('')
+                        );
+        makePool(shape)
+            .forEach(layer =>
+                console.log(layer)
+                    );
+    };
+    shapeProfile(shape['G']);
+    shapeProfile(shape['T']);
+    shapeProfile(shape['G']);
+</script>
+</body>
