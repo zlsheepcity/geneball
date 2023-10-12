@@ -1,0 +1,119 @@
+/** appart colors
+ *  css preset-kit
+ *  2023.2.12 nutri
+ *  zl
+ */
+
+:root {
+ /* Paper Palette */
+  --color-PaperBack:   hsl( 37, 55%, 85%);
+  --color-PaperDark:   hsl(  0,  0%,  8%);
+ /* Noble Palette */
+  --color-NobleBlack:  hsl(226, 15%, 12%);
+  --color-NobleWhite:  hsl(226, 27%, 90%);
+  --color-NobleNight:  hsl(226, 17%, 20%);
+  --color-NobleDay:    hsl(226, 32%, 75%);
+  --color-NobleSky:    hsl(204, 22%, 55%);
+  --color-NobleSea:    hsl(212, 34%, 29%);
+  --color-NobleSunset: hsl(359, 28%, 82%);
+  --color-NobleAccent: hsl(359, 54%, 53%);
+  --color-NobleAction: hsl(359, 59%, 43%);
+ /* Ivory Palette */
+  --color-Ivory:       hsl( 53, 66%, 80%);
+  --color-IvoryAccent: hsl( 53, 70%, 76%);
+  --color-IvoryDark:   hsl(204,  4%, 22%);
+  --color-IvoryGray:   hsl(204,  8%, 38%);
+ /* App Palette */
+  --color-AppBlue:     hsl(202, 81%, 23%);
+  --color-AppGreen:    hsl(155, 31%, 62%);
+  --color-AppGold:     hsl( 42, 79%, 53%);
+  --color-AppRed:      hsl( 15, 75%, 30%);
+  --color-AppBrown:    hsl( 34, 20%, 33%);
+}
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Color Model ZL.2020 */
+
+    .use-colors {
+      --background-color: var(--back-color);
+      --color:            var(--text-color);
+        background-color: var(--background-color);
+        color:            var(--color);
+    }
+
+    .colors--base {
+      --back-color:       white;
+      --back-color-more:  white;
+      --back-color-less:  white;
+
+      --text-color:       black;
+      --text-color-more:  black;
+      --text-color-less:  black;
+
+      --link-color:       firebrick;
+      --link-color-more:  firebrick;
+      --link-color-text:  white;
+    }
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Color Palettes */
+
+
+    .colors--swed {
+      --back-color:       hsl(226, 15%, 12%); /* NobleBlack */
+      --back-color-more:  hsl(212, 34%, 29%); /* NobleSea */
+      --back-color-less:  hsl(226, 17%, 20%); /* NobleNight */
+
+      --text-color:       hsl(226, 27%, 90%); /* NobleWhite */
+      --text-color-more:  hsl(226, 32%, 75%); /* NobleDay */
+      --text-color-less:  hsl(226, 32%, 66%);
+
+      --link-color:       hsl(359, 54%, 53%); /* NobleAccent */
+      --link-color-more:  hsl(359, 59%, 43%); /* NobleAction */
+      --link-color-text:  white;
+    }
+
+    .colors--swed-secondary {
+      --back-color:       hsl(212, 34%, 29%); /* NobleSea */
+      --back-color-more:  hsl(212, 42%, 22%);
+      --back-color-less:  hsl(212, 30%, 32%);
+
+      --text-color:       hsl(226, 27%, 90%); /* NobleWhite */
+      --text-color-more:  hsl(226, 32%, 75%); /* NobleDay */
+      --text-color-less:  hsl(226, 32%, 66%);
+
+      --link-color:       hsl(359, 54%, 53%); /* NobleAccent */
+      --link-color-more:  hsl(359, 59%, 43%); /* NobleAction */
+      --link-color-text:  white;
+    }
+
+    .colors--swed-third {
+      --back-color:       hsl(204, 22%, 55%); /* NobleSky */
+      --back-color-more:  hsl(204, 26%, 50%);
+      --back-color-less:  hsl(204, 18%, 58%);
+
+      --text-color:       hsl(226, 15%, 12%); /* NobleBlack */
+      --text-color-more:  hsl(212, 34%, 29%); /* NobleSea */
+      --text-color-less:  hsl(226, 17%, 20%); /* NobleNight */
+
+      --link-color:       hsl(359, 54%, 53%); /* NobleAccent */
+      --link-color-more:  hsl(359, 59%, 43%); /* NobleAction */
+      --link-color-text:  white;
+    }
+
+    .colors--ivory {
+      --back-color:       hsl( 53, 66%, 80%); /* Ivory */
+      --back-color-more:  hsl( 53, 70%, 70%);
+      --back-color-less:  hsl( 53, 70%, 76%); 
+
+      --text-color:       hsl(204,  4%, 22%); /* IvoryDark */
+      --text-color-more:  hsl(204,  8%, 38%); /* IvoryGray */
+      --text-color-less:  hsl(204,  8%, 38%); /* IvoryGray */
+
+      --link-color:       hsl(359, 54%, 53%); /* NobleAccent */
+      --link-color-more:  hsl(359, 59%, 43%); /* NobleAction */
+      --link-color-text:  white;
+    }
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */

@@ -1,0 +1,370 @@
+/** appart typography
+ *  css preset-kit
+ *  2023.2.12 nutri
+ *  zl
+ */
+
+/** -------------------------------------------- Font files  */
+
+@font-face {
+    font-family: 'Vollkorn';
+    font-weight:  normal;
+    font-style:   normal;
+    src:
+        /* local('Vollkorn'), */
+        url('./fonts/Vollkorn-R.eot?#iefix')           format('embedded-opentype'),
+        url('./fonts/Vollkorn-R.woff2')                format('woff2'),
+        url('./fonts/Vollkorn-R.woff')                 format('woff'),
+        url('./fonts/Vollkorn-R.ttf')                  format('truetype'),
+        url('./fonts/Vollkorn-R.svg#Vollkorn-Regular') format('svg');
+}
+@font-face {
+    font-family: 'Vollkorn';
+    font-weight:  700;
+    font-style:   normal;
+    src:
+        url('./fonts/Vollkorn-B.eot?#iefix')        format('embedded-opentype'),
+        url('./fonts/Vollkorn-B.woff2')             format('woff2'),
+        url('./fonts/Vollkorn-B.woff')              format('woff'),
+        url('./fonts/Vollkorn-B.ttf')               format('truetype'),
+        url('./fonts/Vollkorn-B.svg#Vollkorn-Bold') format('svg');
+}
+@font-face {
+    font-family: 'Vollkorn';
+    font-weight:  normal;
+    font-style:   italic;
+    src:
+        url('./fonts/Vollkorn-I.eot?#iefix')          format('embedded-opentype'),
+        url('./fonts/Vollkorn-I.woff2')               format('woff2'),
+        url('./fonts/Vollkorn-I.woff')                format('woff'),
+        url('./fonts/Vollkorn-I.ttf')                 format('truetype'),
+        url('./fonts/Vollkorn-I.svg#Vollkorn-Italic') format('svg');
+}
+
+@font-face {
+    font-family: 'VT323';
+    font-weight:  normal;
+    font-style:   normal;
+    src:
+        url('./fonts/VT323-CODE.eot?#iefix')        format('embedded-opentype'),
+        url('./fonts/VT323-CODE.woff')              format('woff'),
+        url('./fonts/VT323-CODE.ttf')               format('truetype'),
+        url('./fonts/VT323-CODE.svg#VT323-Regular') format('svg');
+}
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ font rendering */
+
+
+html {
+   -ms-text-size-adjust:     100%;
+   -webkit-text-size-adjust: 100%;
+}
+body {
+    text-rendering: optimizeLegibility;
+   -webkit-font-smoothing: antialiased;
+}
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ font base reset */
+
+
+body {
+    line-height: var(--line-height, 1.5);
+    font-family: var(--font-family, sans-serif);
+    font-weight: var(--font-weight, normal);
+ /* font-size:   use default */
+
+ /* store base values */
+  --base-font-size:   1rem;
+  --base-line-height: var(--line-height, 1.5);
+
+ /* Decrease vertical padding on text paragraphs, to
+    make them visually equal with horizontal paddings.
+    Pixel-perfect value depends on font-family. */
+  --base-font-square-ratio: 0.25;
+}
+
+.font-primary     { font-family: var(--font-family, sans-serif); }
+.font-secondary   { font-family: var(--font-family-secondary, serif); }
+.font-native-sans { font-family: var(--font-family-interface, sans-serif); }
+
+.em-reset {
+    font-size:   var(--base-font-size,   1rem);
+    line-height: var(--base-line-height, 1.5);
+}
+
+
+/**~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ font settings */
+
+
+    :root {
+      --font-family:             var(--font-family--tufte-serif);
+      --font-family-secondary:   var(--font-family--tufte-sans);
+      --font-family-interface:   var(--font-family--native-sans);
+      --font-weight:             400;
+    }
+
+    @supports (hanging-punctuation: first) {
+           * { hanging-punctuation: first; }
+    }
+
+    /* Font Features Inspector: wakamaifondue.com */
+
+    .font-feature-digital {
+        font-feature-settings:
+            'lnum' on,
+            'ss14' on,
+            'ss17' on;
+    }
+    .sup-num {
+        font-size:             inherit;
+        vertical-align:        text-top;
+        font-feature-settings: 'sups' on;
+    }
+    .sub-num {
+        font-size:             inherit;
+        vertical-align:        text-bottom;
+        font-feature-settings: 'subs' on;
+    }
+
+
+/** - - - - - - - - - - - - - - - - - - Native font stack 2018 */
+
+
+:root {
+  --font-family--native-sans:
+       -apple-system,        /* Safari for macOS and iOS (San Francisco) */
+        system-ui,           /* macOS Chrome, Windows Chrome */
+        BlinkMacSystemFont,  /* Chrome < 56 for macOS (San Francisco) */
+       "Segoe UI",           /* Windows */
+        Roboto,              /* Android */
+        Oxygen,              /* KDE */
+        Ubuntu,              /* Ubuntu */
+        Cantarell,           /* GNOME */
+       "Fira Sans",          /* Firefox OS */
+       "Helvetica Neue",     /* old macOS */
+        Arial,               /* Basic web fallback */
+        sans-serif,
+       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Emoji */
+}
+
+
+/** - - - - - - - - - - - - - - - - - - Tufte 2018
+ *  book-style design
+
+    @import url('https://fonts.googleapis.com/css?family=Vollkorn:400,400i,700&subset=cyrillic');
+
+    <!-- GOOGLE FONTS -->
+
+    <link rel="preconnect"   href="//fonts.gstatic.com" crossorigin>
+
+    <link
+        media="none" onload="if(media!='all')media='all'"
+        href="https://fonts.googleapis.com/css?family=Vollkorn:400,400i,700&subset=cyrillic"
+        rel="stylesheet">
+    <link
+        media="none" onload="if(media!='all')media='all'"
+        href="https://fonts.googleapis.com/css?family=VT323"
+        rel="stylesheet">
+
+    <noscript>
+    <link
+        media="all"
+        href="https://fonts.googleapis.com/css?family=Vollkorn:400,400i,700&subset=cyrillic"
+        rel="stylesheet">
+    <link
+        media="all"
+        href="https://fonts.googleapis.com/css?family=VT323"
+        rel="stylesheet">
+    </noscript>
+
+ */
+
+
+:root {
+  --font-family--tufte-serif:
+        Vollkorn,
+        et-book,
+        Palatino,
+       "Palatino Linotype",
+       "Palatino LT STD",
+       "Book Antiqua",
+        Georgia,
+        serif,
+       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-family--tufte-sans:
+       "Trebuchet MS",
+       "Gill Sans",
+       "Gill Sans MT",
+        sans-serif,
+       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+
+/** - - - - - - - - - - - - - - - - - - Font-size system LH 1.5 */
+
+    :root {
+     /* 64/80 */
+      --h1-font-size:    4rem;
+      --h1-line-height:  1.25;
+
+     /* 48/60 */
+      --h2-font-size:    3rem;
+      --h2-line-height:  1.25;
+
+     /* 36/48 */
+      --h3-font-size:    2.25rem;
+      --h3-line-height:  calc(4/3);
+
+     /* 24/32 */
+      --h4-font-size:    1.5rem;
+      --h4-line-height:  calc(4/3);
+
+     /* 20/24 */
+      --h5-font-size:    1.25rem;
+      --h5-line-height:  1.2;
+
+     /* 16/24 */
+      --h6-font-size:    1rem;
+      --h6-line-height:  1.5;
+      --p-font-size:     1rem;
+      --p-line-height:   1.5;
+
+
+     /* 20/24 */
+      --inc-font-size:   1.25em;
+      --inc-line-height: 1.2;
+
+     /* 16/24 */
+      --def-font-size:   1em;
+      --def-line-height: 1.5;
+
+     /* 13/16 */
+      --dec-font-size:   calc(13/16*1em);
+      --dec-line-height: calc(16/13);
+
+     /* 12/16 */
+      --doz-font-size:   0.75em;
+      --doz-line-height: calc(4/3);
+    }
+
+@media all and (max-width:42em) {
+    :root {
+     /* 36/40 */
+      --h1-font-size:    2.25rem;
+      --h1-line-height:  calc(40/36);
+     /* 32/36 */
+      --h2-font-size:    2rem;
+      --h2-line-height:  calc(36/32);
+     /* 28/32 */
+      --h3-font-size:    1.75rem;
+      --h3-line-height:  calc(32/28);
+    }
+}
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Font-size */
+
+/** direct tags */
+h1 {
+    font-size:   var(--h1-font-size);
+    line-height: var(--h1-line-height);}
+h2 {
+    font-size:   var(--h2-font-size);
+    line-height: var(--h2-line-height);}
+h3 {
+    font-size:   var(--h3-font-size);
+    line-height: var(--h3-line-height);}
+h4 {
+    font-size:   var(--h4-font-size);
+    line-height: var(--h4-line-height);}
+h5 {
+    font-size:   var(--h5-font-size);
+    line-height: var(--h5-line-height);}
+h6 {
+    font-size:   var(--h6-font-size);
+    line-height: var(--h6-line-height);}
+/**/
+
+.h1 {
+    font-size:   var(--h1-font-size);
+    line-height: var(--h1-line-height);}
+.h2 {
+    font-size:   var(--h2-font-size);
+    line-height: var(--h2-line-height);}
+.h3 {
+    font-size:   var(--h3-font-size);
+    line-height: var(--h3-line-height);}
+.h4 {
+    font-size:   var(--h4-font-size);
+    line-height: var(--h4-line-height);}
+.h5 {
+    font-size:   var(--h5-font-size);
+    line-height: var(--h5-line-height);}
+.h6 {
+    font-size:   var(--h6-font-size);
+    line-height: var(--h6-line-height);}
+
+.text-inline-bigger {
+ /* 20/24 */
+  --font-size:   var(--inc-font-size, 1.25em);
+  --line-height: var(--inc-line-height, 1.2);
+    font-size:   var(--font-size);
+    line-height: var(--line-height);
+}
+.text-block-bigger {
+ /* 20/32 */
+  --font-size:   var(--inc-font-size, 1.25em);
+  --line-height: calc(32/20);
+    font-size:   var(--font-size);
+    line-height: var(--line-height);
+}
+.text-inline-smaller,
+.text-block-smaller {
+ /* 13/16 */
+  --font-size:   var(--dec-font-size,   calc(13/16*1em));
+  --line-height: var(--dec-line-height, calc(16/13));
+    font-size:   var(--font-size);
+    line-height: var(--line-height);
+}
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Text Paragraph */
+/*
+    Readable text blocks with width limitation
+    Values tested in the 2020 by zl
+ */
+    :root {
+      --paragraph-width--max: 42em; /* Limit ~ 42em in most typefaces */
+      --paragraph-width--opt: 32em; /* Optimal */
+      --paragraph-width--mid: 24em; /* Smaller */
+      --paragraph-width--min: 12em; /* Minimal Readable */
+    }
+    @media all and (max-width:12em) { :root {
+      --paragraph-width--min: 100%;
+    } }
+
+    .paragraph {
+      --max-width: var(--paragraph-width--opt);
+      --min-width: var(--paragraph-width--min);
+        max-width: var(--max-width);
+        min-width: var(--min-width);
+    }
+    .maxi-paragraph {
+      --max-width: var(--paragraph-width--max);
+      --min-width: var(--paragraph-width--min);
+        max-width: var(--max-width);
+        min-width: var(--min-width);
+    }
+    .midi-paragraph {
+      --max-width: var(--paragraph-width--mid);
+      --min-width: var(--paragraph-width--min);
+        max-width: var(--max-width);
+        min-width: var(--min-width);
+    }
+    .mini-paragraph {
+      --max-width: var(--paragraph-width--min);
+        max-width: var(--max-width);
+    }
+
+
+/*  EOF appart typography */

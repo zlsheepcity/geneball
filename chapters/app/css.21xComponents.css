@@ -1,0 +1,47 @@
+/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Chapters 23.11.12 */
+
+p { font-size:1.25em }
+q { font-style: italic }
+blockquote h6 { padding-bottom: 0.25em; }
+
+/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ article grid */
+
+article {
+    width:    100%;
+    display:  grid;
+    grid-gap: 1em;
+    grid-auto-flow:  row;
+    grid-auto-rows:  min-content;
+    grid-template-columns: 0 var(--c) 0;
+  --c: var(--text) 2em var(--side);
+  --text: auto;
+  --side: 24em;
+  --grid-column-full: 1/6;
+  --grid-column-text: 2/3;
+  --grid-column-side: 4/5;
+  --grid-column-wrap: 2/4;
+  --grid-column-main: 1/4;
+}
+article >*          {grid-column:var(--grid-column-text)}
+article >section    {grid-column:var(--grid-column-text)}
+article >article    {grid-column:var(--grid-column-full)}
+article >header     {grid-column:var(--grid-column-wrap)}
+article >blockquote {grid-column:var(--grid-column-side)}
+article >p {
+    max-width: 32em;
+}
+article >h3 {margin-top:2rem}
+article +article { margin-top: 4em; }
+
+/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ article subgrid */
+
+article >section {
+    width:    100%;
+    display:  grid;
+    grid-gap: 1em;
+    grid-auto-flow:  row;
+    grid-auto-rows:  min-content;
+    grid-template-columns: 1fr;
+}
+
+/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ End */
