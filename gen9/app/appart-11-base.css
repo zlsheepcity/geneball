@@ -1,0 +1,52 @@
+/** appart base
+ *  presets and basic setup
+ *  2023.2.12 nutri
+ *  zl
+ */
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Spacing Units */
+
+
+:root {
+  --line-height:   1.5;
+  --row-space:     1.5rem;                              /* Vertical */
+  --col-space:     1.5rem;                              /* Horizontal */
+  --mid-space:     2.5rem;                              /* Bigger 1 */
+  --big-space:       4rem;                              /* Bigger 2 */
+  --all-space:     var(--row-space) var(--col-space);   /* Combo Shortcode */
+}
+
+
+/** ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Browser */
+
+
+/** Minimal box model */
+    *, *:before, *:after { box-sizing: border-box; }
+    html                 { height: 100%; }
+    html, body           { margin: 0; padding: 0; }
+
+/** Full-height 2019
+    https://css-tricks.com/some-things-you-oughta-know-when-working-with-viewport-units/
+*/  body {
+        min-height:  100vh;
+        min-height: -webkit-fill-available;
+        min-height: -moz-available;
+        min-height:  available;
+        min-height: -webkit-stretch;
+        min-height: -moz-stretch;
+        min-height:  stretch;
+    }
+
+/** Scroll behavoir */
+    html { scroll-behavior:smooth; cursor:default; }
+    body { overflow-y:scroll; scrollbar-gutter:stable; }
+
+/** Tap on clickable element */
+    a, area, button, input, label, select, summary, textarea, [tabindex] {
+       -ms-touch-action: manipulation;
+           touch-action: manipulation;
+    }
+
+
+/** EOF appart base */
