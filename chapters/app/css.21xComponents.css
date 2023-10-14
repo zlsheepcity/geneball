@@ -2,7 +2,8 @@
 
 p { font-size:1.25em }
 q { font-style: italic }
-blockquote h6 { padding-bottom: 0.25em; }
+blockquote h6 { padding-bottom: 0.25em }
+article p { max-width: 32em }
 
 /* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ article grid */
 
@@ -19,19 +20,34 @@ article {
   --grid-column-full: 1/6;
   --grid-column-text: 2/3;
   --grid-column-side: 4/5;
-  --grid-column-wrap: 2/4;
-  --grid-column-main: 1/4;
+  --grid-column-wrap: 2/5;
 }
 article >*          {grid-column:var(--grid-column-text)}
 article >section    {grid-column:var(--grid-column-text)}
 article >article    {grid-column:var(--grid-column-full)}
 article >header     {grid-column:var(--grid-column-wrap)}
+article >footer     {grid-column:var(--grid-column-wrap)}
 article >blockquote {grid-column:var(--grid-column-side)}
-article >p {
-    max-width: 32em;
-}
-article >h3 {margin-top:2rem}
+
+article >*+h3 {margin-top:2rem}
 article +article { margin-top: 4em; }
+
+@media all and (max-width:60rem) {
+    article {
+      --c: 1fr;
+      --grid-column-full: 1/4;
+      --grid-column-text: 2/3;
+      --grid-column-side: 2/3;
+      --grid-column-wrap: 2/3;
+    }
+    article >blockquote {
+        margin:   1rem 0;
+        margin-left: 40%;
+    }
+    article p {
+        max-width: 100%;
+    }
+}
 
 /* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ article subgrid */
 
