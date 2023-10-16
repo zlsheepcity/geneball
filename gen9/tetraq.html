@@ -69,13 +69,9 @@
         pushMatter: shape => shape.map(E=>[0, ...E]),
         antiMatter: shape => shape.map(E=>E.reverse),
         antiEnergy: shape => shape.reverse,
-        makeMirror: shape => shape.map(E=>E[0]).reduce(
-        makeMirror: shape => shape.map(E=>E[0]).reduce(
-            (A,c,e)
-        ),
         makeMirror: shape => shape.reduce(
             (Out,level,e) => level.map(
-                (quant,c) => Out[c].push(quant)
+                (quant,c) => [...Out[c], quant]
                 )
             ,[[],[],[],[],[],[]]),
         join: (field, shape) => {
@@ -154,7 +150,9 @@
     shapeProfile(field);
     shapeProfile(shape['G']);
     shapeProfile(ShapeService.makeMirror(shape['G']));
+    //console.log(ShapeService.makeMirror(shape['G']));
     shapeProfile(shape['T']);
+    shapeProfile(ShapeService.makeMirror(shape['T']));
     shapeProfile(shape['G']);
     console.log()
 </script>
