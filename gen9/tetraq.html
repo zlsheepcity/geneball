@@ -69,6 +69,10 @@
         pushMatter: shape => shape.map(E=>[0, ...E]),
         antiMatter: shape => shape.map(E=>E.reverse),
         antiEnergy: shape => shape.reverse,
+        makeMirror: shape => shape.map(E=>E[0]).reduce(
+        makeMirror: shape => shape.map(E=>E[0]).reduce(
+            (A,c,e)
+        ),
         makeMirror: shape => shape.reduce(
             (Out,level,e) => level.map(
                 (quant,c) => Out[c].push(quant)
