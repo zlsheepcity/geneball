@@ -14,6 +14,17 @@
 </head>
 <body>
 <script display-source>
+    const field = [
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+    ];
     const shape = {
           A:[
             [1,1],
@@ -54,19 +65,93 @@
             [1,1],
         ],
     };
+    const ShapeService = {
+        pushMatter: shape => shape.map(E=>[0, ...E]),
+        antiMatter: shape => shape.map(E=>E.reverse),
+        antiEnergy: shape => shape.reverse,
+        makeMirror: shape => shape.reduce(
+            (Out,level,e) => level.map(
+                (quant,c) => Out[c].push(quant)
+                )
+            ,[[],[],[],[],[],[]]),
+        join: (field, shape) => {
+            
+        },
+//        Ex: shape =>
+//            shape.reduce(
+//                (Ex,layer,e) =>
+//                    layer.reduce(
+//                        (Ee,q,c) => {
+//                            const p = shape[1+1*e][c];
+//                            const pressure = (q,p) => 1*q+p*1 >= 1;
+//                            return pressure(q,p)
+//                                ? Ee
+//                                : Ee++
+//                                ; }
+//                        ,Ex)
+//                ,0),
+//        excited:  shape =>
+//            shape.map(e =>
+//                e.map(q => q?'x':'o')
+//                    .join('')
+//                        );
+//        ,
+        shakeOnce: 1,
+    };
+//    console.log('ShapeService', ShapeService.Ex(shape['G']));
+
+    // const M = f => [ (x,e) => f({x,e}) ];
+    // shape => shape.map(M(func)[0]).map(M(wave)[0])
+
     const shapeProfile = shape => {
         const makePool = shape =>
-            shape.map(line =>
-                line.map(q => q?'x':'o')
+            shape.map(e =>
+                e.map(q => q?'x':'o')
                     .join('')
                         );
         makePool(shape)
-            .forEach(layer =>
-                console.log(layer)
+            .forEach((slice,e) =>
+                console.log(`${e}:${slice}`)
                     );
     };
+
+/*
+    const fieldWithShape = (field,shape) => {
+        const Gb = (q,p) => (C=> 1*q+p*1 >=C)(1)
+        const Gi = (q,p) => (C=> 1*q+p*1  *C)(1)
+        const fV = shape =>
+            shape.map( (e,i) =>
+                e.map( (c,j) => ({
+                    x:i,
+                    y:j,
+                    m:c,
+                })));
+        const fW = shape =>
+            shape.map( (e,i) =>
+                e.map( (c,j) =>
+                   Gb( fV[i,j])
+                     ));
+        const fV = field =>
+            shape.map( (e,i) =>
+                e.map( (c,j) => ({
+                    x:i,
+                    y:j,
+                    m:c,
+                })));
+    };
+    const fieldFilledByShape = (field,shape) => {
+        const dFil = ( shape =>
+            shape.map( (e,p) =>
+                e.map( (b,c) => field.reduce(
+                     (m,d,q) => 1*d+b*1 >=1? 1*q+p*1 :0,0
+                 ))))( shape );
+    };
+*/
+    shapeProfile(field);
     shapeProfile(shape['G']);
+    shapeProfile(ShapeService.makeMirror(shape['G']));
     shapeProfile(shape['T']);
     shapeProfile(shape['G']);
+    console.log()
 </script>
 </body>
