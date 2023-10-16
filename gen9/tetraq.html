@@ -76,14 +76,17 @@
         Qw: q=> 1 <=q,
         Wq: q=> 1 * q,
     };
-    const WordShape = function(DNA) {
+    const WordShape = function (DNA={}) {
         const {field, shape} = WorldShapeConfig;
         const { Qx, Qo, Qw } = WorldShapeConfig;
-        const shapeService = {
+        const services = {
             pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
             antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
             antiEnergy: shape => shape.map(Le=>Le).toReversed(),
             fromBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
+            checkShape: shape => Array.isArray(shape) && shape.reduce(
+                    (R,layer) => Array.isArray(layer) && R
+                    ,true),
             dataMirror: shape => shape.reduce(
                 (ap,Le,e) => Le.map(
                     (q,c) => [...ap, q]
@@ -101,8 +104,29 @@
                         return y||x;
                     })],
                     []),
+            randomShape: shapes => shapes[(
+                K => K[Math.floor(Math.random()*K.length)]
+                )( Object.keys(shapes) )],
         };// end of shapeService
-        
+
+        const Ribosome = DNA => ({
+            shape: (fn => {
+                if (DNA.shape && services.checkShape(DNA.shape)) return DNA.shape;
+                if (Object.keys(shape).includes(DNA.form)) return shape[DNA.form];
+                if (DNA.form === 'field') return field;
+                const randomShape = shape[
+                    Object.keys(shape)[
+                        Math.floor(
+                            Math.random()*Object.keys(shape).length
+                        )
+                    ]
+                ];
+                return randomShape;
+            })(),
+            DNA,
+        });
+        const transcription = Ribosome(DNA);
+        const RNA = Object.assign(this,transcription);
     };
 </script>
 <script display-source>
