@@ -76,7 +76,7 @@
         Qw: q=> 1 <=q,
         Wq: q=> 1 * q,
     };
-    const WordShape = function (DNA={}) {
+    const WorldShape = function (DNA={}) {
         const {field, shape} = WorldShapeConfig;
         const { Qx, Qo, Qw } = WorldShapeConfig;
         const services = {
@@ -104,31 +104,30 @@
                         return y||x;
                     })],
                     []),
-            randomShape: shapes => shapes[(
+            chooseRandom: shapes => shapes[(
                 K => K[Math.floor(Math.random()*K.length)]
                 )( Object.keys(shapes) )],
         };// end of shapeService
 
-        const Ribosome = DNA => ({
-            shape: (fn => {
-                if (DNA.shape && services.checkShape(DNA.shape)) return DNA.shape;
-                if (Object.keys(shape).includes(DNA.form)) return shape[DNA.form];
-                if (DNA.form === 'field') return field;
-                const randomShape = shape[
-                    Object.keys(shape)[
-                        Math.floor(
-                            Math.random()*Object.keys(shape).length
-                        )
-                    ]
-                ];
-                return randomShape;
-            })(),
+        const ribosome = DNA => ({
             DNA,
+            shape: (DNA => {
+                const {checkShape, chooseRandom} = services;
+                const {shapes, fields} = { shapes:shape, fields:[field] };
+                const uS = DNA.shape && checkShape(DNA.shape);
+                const uN = Object.keys(shapes).includes(DNA.form);
+                const uF = DNA.form === 'field';
+                return (uS && DNA.shape)
+                    || (uN && shapes[DNA.form])
+                    || (uF && fields[0])
+                    || chooseRandom(shapes);
+                })(DNA),
         });
-        const transcription = Ribosome(DNA);
+        const transcription = ribosome(DNA);
         const RNA = Object.assign(this,transcription);
     };
 </script>
+
 <script display-source>
     const field = [
         [0,0,0,0,0,0],
@@ -310,25 +309,32 @@
 //    shapeProfile(shape['T']);
 //    console.groupEnd('');
 
-    shapeProfile(field);
-    console.group('ShapeService.join');
-    const field2 = ShapeService.join(
-        field,
-        shape['G']
-        );
-    shapeProfile(shape['G']);
-    shapeProfile(field2);
-    const field3 = ShapeService.join(
-        field2,
-        shape['H']
-        );
-    shapeProfile(shape['H']);
-    shapeProfile(field3);
-
-    console.groupEnd('');
+//    shapeProfile(field);
+//    console.group('ShapeService.join');
+//    const field2 = ShapeService.join(
+//        field,
+//        shape['G']
+//        );
+//    shapeProfile(shape['G']);
+//    shapeProfile(field2);
+//    const field3 = ShapeService.join(
+//        field2,
+//        shape['H']
+//        );
+//    shapeProfile(shape['H']);
+//    shapeProfile(field3);
+//
+//    console.groupEnd('');
 //    shapeProfile(shape['T']);
 //    shapeProfile(ShapeService.makeMirror(shape['T']));
 //    shapeProfile(shape['G']);
 //    console.log()
+</script>
+<script display-source>
+    console.group('WorldShape');
+    const nSG = new WorldShape({form:'G'});
+    console.log('nsG:',nSG);
+    shapeProfile(nSG.shape);
+    console.groupEnd();
 </script>
 </body>
