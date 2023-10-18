@@ -85,7 +85,7 @@
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ services
 
-        const servicesOfShape ={
+        const servicesOfShape = (({Qo,Qb,Qsex}) => ({
             pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
             antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
             antiEnergy: shape => shape.map(Le=>Le).toReversed(),
@@ -93,27 +93,30 @@
             makeBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
             dataMirror: shape => shape.reduce(
                 (ap,Le,e) => Le.map(
-                    (q,c) => [...ap, q]
-                ),  shape[0].map(G=>[])
+                    (q,c) => [...ap[c], q]
+                ), [...shape[0].map(G=>[])]
                 ),
             checkShape: shape => Array.isArray(shape) && shape.reduce(
                 (check,layer) => Array.isArray(layer) && check
                 ,shape),
-        };
-
-        const servicesOfField ={
-            takeShape: (field, shape, h) => field.reduce(
+            joinShapes: (shape, join, h = 0) => shape.reduce(
                 (ap,Le,e) => [ ...ap,Le.map(
                     (x,c) => {
                         const U = true
                             && e >= h
-                            && e <  h+ shape.length
-                            && c <  shape[0].length
+                            && e <  h+ join.length
+                            && c <  join[0].length
                             ;
-                        const y = U && shape[e-h][c] || Qo();
+                        const y = U && join[e-h][c] || Qo();
                         return Qsex(x,y);
                     })],
                     []),
+        }))({Qo,Qb,Qsex});
+
+        const servicesOfField ={
+
+
+
         };
 
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ workers
@@ -127,9 +130,43 @@
             || (target==='field' && field)
             || false;
 
-        const createdShape = dna => new WSM.Csp(dna);
+        const createdShape = shapeDNA => new WSM.Csp(shapeDNA);
 
         const checkedShape = shape => WSM.Fsp.checkShape(shape);
+
+        const shapeEnergyWeight = (shape, positive = true) => {
+            const Ds = WSM.Fsp.dataMirror(shape);
+            const Em = C=> C.find(Qw) ? C.findLastIndex(Qw) +1:0;
+            const En = C=> C.find(Qw) ? C.findIndex(Qw)       :0;
+            const De = Ds.map(positive? Em:En );
+            return De;
+            };
+
+        const mergeEnergyHeight = (field, shape) => {
+            const Ef = shapeEnergyWeight(field);
+            const Es = shapeEnergyWeight(shape);
+            const Ep = shapeEnergyWeight(shape,false);
+            const Hm = (h,a,c) =>(
+                e => e>h ? e:h
+            )(
+                Es[c]?  1*Ef[c] -1*Ep[c] :0
+            );
+            const h = Ef.reduce(Hm,0);
+            return h;
+            };
+
+        const mergeAllowed = (field, shape) => true;
+        const mergeMake = (field, shape) => {
+            const {joinShapes} = WSM.Fsp;
+            const h = mergeEnergyHeight(field, shape);
+            const merge = mergeAllowed(field, shape)
+                ? joinShapes(field,shape,h)
+                : field ;
+            return merge;
+        };
+
+        WSM.shapeEnergyWeight = shapeEnergyWeight;
+        WSM.mergeEnergyHeight = mergeEnergyHeight;
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ shape
 
@@ -141,7 +178,20 @@
             });
             const transcription = {DNA, ...ribosome(DNA)};
             const RNA = Object.assign(this,transcription);
-        };
+
+            //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ shape api
+
+            RNA.take = pill => {
+                RNA.shape = mergeMake(RNA.shape, pill.shape);
+                return RNA;
+                };
+            RNA.push = f => {
+                RNA.shape = WSM.Fsp.pushMatter(RNA.shape);
+                return RNA;
+            };
+            
+
+        }; // WorldShape
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Master api
 
@@ -423,9 +473,35 @@
 
     console.group('WorldShapeMaster');
     const WM = new WorldShapeMaster();
-    const Sm1 = WM.born();
+
+    const Fm1 = WM.born({form:'field'});
+    const Sm1 = WM.born({form:'F'});
+    const Sm2 = WM.born();
+    const Sm3 = WM.born();
     console.log('Sm1:',Sm1);
     shapeProfile(Sm1.shape);
+    console.log('Sm2:',Sm2);
+    shapeProfile(Sm2.shape);
+    console.log('Sm3:',Sm3);
+    shapeProfile(Sm3.shape);
+
+    Sm2.push();
+    Sm3.push();
+    Sm3.push();
+    Fm1.take(Sm1);
+    Fm1.take(Sm2);
+    Fm1.take(Sm3);
+
+    console.log('Fm1:',Fm1);
+    shapeProfile(Fm1.shape);
+
+    console.log(
+        'tests',
+        //WM.Fsf.findMergeH(Fm1.shape,Sm1.shape)
+        //WM.Fsp.dataEnergy(Sm1.shape,false)
+        //WM.Fsp.dataMirror(Sm1.shape)
+    );
+
     console.groupEnd();
 
 
