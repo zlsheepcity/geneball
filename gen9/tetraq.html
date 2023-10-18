@@ -30,7 +30,7 @@
             [0,0,0,0,0,0],
             [0,0,0,0,0,0],
         ],
-        shape: {
+        shapes: {
               A:[
                 [1,1],
                 [1,1],
@@ -75,6 +75,80 @@
         Qo: d=> 0,
         Qw: q=> 1 <=q,
         Wq: q=> 1 * q,
+        Qsex: (x,y)=> y||x,
+    };
+    const WorldShapeMaster = function () {
+        const {field,shapes} = WorldShapeConfig;
+        const { Qx, Qo, Qb } = WorldShapeConfig;
+        const { Qsex,Wq,Qw } = WorldShapeConfig;
+        const WSM = Object.assign(this);
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ services
+
+        const servicesOfShape ={
+            pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
+            antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
+            antiEnergy: shape => shape.map(Le=>Le).toReversed(),
+            fromBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
+            makeBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
+            dataMirror: shape => shape.reduce(
+                (ap,Le,e) => Le.map(
+                    (q,c) => [...ap, q]
+                ),  shape[0].map(G=>[])
+                ),
+            checkShape: shape => Array.isArray(shape) && shape.reduce(
+                (check,layer) => Array.isArray(layer) && check
+                ,shape),
+        };
+
+        const servicesOfField ={
+            takeShape: (field, shape, h) => field.reduce(
+                (ap,Le,e) => [ ...ap,Le.map(
+                    (x,c) => {
+                        const U = true
+                            && e >= h
+                            && e <  h+ shape.length
+                            && c <  shape[0].length
+                            ;
+                        const y = U && shape[e-h][c] || Qo();
+                        return Qsex(x,y);
+                    })],
+                    []),
+        };
+
+        //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ workers
+
+        const sporadicShape = f => shapes[(
+            K => K[Math.floor(Math.random()*K.length)]
+            )( Object.keys(shapes) )];
+
+        const targetedShape = target =>
+            (Object.keys(shapes).includes(target) && shape[target])
+            || (target==='field' && field)
+            || false;
+
+        const createdShape = dna => new WSM.Csp(dna);
+
+        const checkedShape = shape => WSM.Fsp.checkShape(shape);
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ shape
+
+        const WorldShape = function WorldShape (DNA={}) {
+            const ribosome = ({
+                shape:S, form:F,
+            }) => ({
+                shape: checkedShape(S) || targetedShape(F) || sporadicShape(),
+            });
+            const transcription = {DNA, ...ribosome(DNA)};
+            const RNA = Object.assign(this,transcription);
+        };
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Master api
+
+        WSM.Fsp = servicesOfShape;
+        WSM.Fsf = servicesOfField;
+        WSM.Csp = WorldShape;
+        WSM.born = createdShape;
     };
     const WorldShape = function (DNA={}) {
         const {field, shape} = WorldShapeConfig;
@@ -85,6 +159,14 @@
             antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
             antiEnergy: shape => shape.map(Le=>Le).toReversed(),
             fromBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
+            dataMirror: shape => shape.reduce(
+                (ap,Le,e) => Le.map(
+                    (q,c) => [...ap, q]
+                ),  shape[0].map(G=>[])
+                ),
+            checkShape: shape => Array.isArray(shape) && shape.reduce(
+                (check,layer) => Array.isArray(layer) && check
+                ,true),
         };
         const services = {
             pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
@@ -120,7 +202,7 @@
             DNA,
             shape: (DNA => {
                 const {checkShape, chooseRandom} = services;
-                const {shapes, fields} = { shapes:shape, fields:[field] };
+                const {shapes, fields} = { shapes, fields:[field] };
                 const uS = DNA.shape && checkShape(DNA.shape);
                 const uN = Object.keys(shapes).includes(DNA.form);
                 const uF = DNA.form === 'field';
@@ -338,10 +420,20 @@
 //    console.log()
 </script>
 <script display-source>
-    console.group('WorldShape');
-    const nSG = new WorldShape({form:'G'});
-    console.log('nsG:',nSG);
-    shapeProfile(nSG.shape);
+
+    console.group('WorldShapeMaster');
+    const WM = new WorldShapeMaster();
+    const Sm1 = WM.born();
+    console.log('Sm1:',Sm1);
+    shapeProfile(Sm1.shape);
     console.groupEnd();
+
+
+//    console.group('WorldShape');
+//    const nSG = new WorldShape({form:'G'});
+//    console.log('nsG:',nSG);
+//    shapeProfile(nSG.shape);
+//    console.groupEnd();
+
 </script>
 </body>
