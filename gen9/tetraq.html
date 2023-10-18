@@ -79,6 +79,13 @@
     const WorldShape = function (DNA={}) {
         const {field, shape} = WorldShapeConfig;
         const { Qx, Qo, Qw } = WorldShapeConfig;
+
+        const serviceForShape ={
+            pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
+            antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
+            antiEnergy: shape => shape.map(Le=>Le).toReversed(),
+            fromBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
+        };
         const services = {
             pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
             antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
