@@ -72,8 +72,8 @@
                 ],
             },
             field: {
-                c: 'GSLMTH',
-                e:  9,
+                c: 'GSLDAMTH',
+                e:  10,
             },
             Qb: q=> q?1:0,
             Qx: d=> 1,
@@ -263,27 +263,48 @@
 
 </script>
 <script display-source>
-
-    console.group('WorldShapeMaster');
     const WM = new WorldShapeMaster();
 
     const Fm1 = WM.born({form:'field'});
     const Sm1 = WM.born();
     const Sm2 = WM.born();
     const Sm3 = WM.born();
+    const Tm1 = WM.born();
+    const Tm2 = WM.born();
+    const Tm3 = WM.born();
+
+    console.groupCollapsed('Shapes');
     console.log('Sm1:',Sm1);
     shapeProfile(Sm1.shape);
     console.log('Sm2:',Sm2);
     shapeProfile(Sm2.shape);
     console.log('Sm3:',Sm3);
     shapeProfile(Sm3.shape);
+    console.log('Tm1:',Tm1);
+    shapeProfile(WM.Fsp.antiMatter(Tm1.shape));
+    console.log('Tm2:',Tm2);
+    shapeProfile(WM.Fsp.antiMatter(Tm2.shape));
+    console.log('Tm3:',Tm3);
+    shapeProfile(WM.Fsp.antiMatter(Tm3.shape));
+    console.groupEnd();
+
+    console.group('WorldShapeMaster');
 
     Sm2.push();
     Sm3.push();
     Sm3.push();
-    Fm1.take(Sm1,false);
+    Fm1.take(Sm1);
     Fm1.take(Sm2);
     Fm1.take(Sm3);
+
+    Tm2.push();
+    Tm3.push();
+    Tm3.push();
+    Fm1.take(Tm1,false);
+    Fm1.take(Tm2,false);
+    Fm1.take(Tm3,false);
+
+
 
     console.log('Fm1:',Fm1);
     shapeProfile(Fm1.shape);
