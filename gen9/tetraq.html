@@ -18,66 +18,71 @@
     // LH
     // XOQ - PUBEY
     // ecxydqpb
-    const WorldShapeConfig = {
-        field: [
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-        ],
-        shapes: {
-              A:[
-                [1,1],
-                [1,1],
-            ],D:[
-                [1,1,1,1],
-            ],F:[
-                [1],
-                [1],
-                [1],
-                [1],
-            ],
-            G:[
-                [1,1,0],
-                [0,1,1],
-            ],
-            H:[
-                [1,0],
-                [1,1],
-                [0,1],
-            ],
-            S:[
-                [1,1,1],
-                [0,0,1],
-            ],
-            T:[
-                [1,0,0],
-                [1,1,1],
-            ],
-            M:[
-                [1,1],
-                [0,1],
-                [0,1],
-            ],
-            L:[
-                [1,0],
-                [1,0],
-                [1,1],
-            ],
-        },
-        Qb: q=> q?1:0,
-        Qx: d=> 1,
-        Qo: d=> 0,
-        Qw: q=> 1 <=q,
-        Wq: q=> 1 * q,
-        Qsex: (x,y)=> y||x,
-    };
     const WorldShapeMaster = function () {
+        const WorldShapeConfig = {
+//            field: [
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//                [0,0,0,0,0,0],
+//            ],
+            shapes: {
+                  A:[
+                    [1,1],
+                    [1,1],
+                ],D:[
+                    [1,1,1,1],
+                ],F:[
+                    [1],
+                    [1],
+                    [1],
+                    [1],
+                ],
+                G:[
+                    [1,1,0],
+                    [0,1,1],
+                ],
+                H:[
+                    [1,0],
+                    [1,1],
+                    [0,1],
+                ],
+                S:[
+                    [1,1,1],
+                    [0,0,1],
+                ],
+                T:[
+                    [1,0,0],
+                    [1,1,1],
+                ],
+                M:[
+                    [1,1],
+                    [0,1],
+                    [0,1],
+                ],
+                L:[
+                    [1,0],
+                    [1,0],
+                    [1,1],
+                ],
+            },
+            field: {
+                c: 'GSLMTH',
+                e:  9,
+            },
+            Qb: q=> q?1:0,
+            Qx: d=> 1,
+            Qo: d=> 0,
+            Qw: q=> 1 <=q,
+            Wq: q=> 1 * q,
+            Qsex: (x,y)=> y||x,
+        };
+
         const {field,shapes} = WorldShapeConfig;
         const { Qx, Qo, Qb } = WorldShapeConfig;
         const { Qsex,Wq,Qw } = WorldShapeConfig;
@@ -111,13 +116,11 @@
                         return Qsex(x,y);
                     })],
                     []),
+            freshField: ({c,e})=> Array(e).fill([])
+                .map(Le=>
+                    [...c].map(Li=> [Qo()][0] )
+                ),
         }))({Qo,Qb,Qsex});
-
-        const servicesOfField ={
-
-
-
-        };
 
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ workers
 
@@ -126,13 +129,24 @@
             )( Object.keys(shapes) )];
 
         const targetedShape = target =>
-            (Object.keys(shapes).includes(target) && shape[target])
-            || (target==='field' && field)
+            (Object.keys(shapes).includes(target) && shapes[target])
+            || ( target==='field' && WSM.Fsp.freshField(field) )
             || false;
 
         const createdShape = shapeDNA => new WSM.Csp(shapeDNA);
 
         const checkedShape = shape => WSM.Fsp.checkShape(shape);
+
+        const prepareShape = (shape, positive = true) => {
+            const c = field.c;
+            const e = shape.length
+            const share = WSM.Fsp.joinShapes(
+                WSM.Fsp.freshField({c,e}),
+                shape,
+                0);
+            const antiShare = WSM.Fsp.antiMatter(share);
+            return positive? share : antiShare;
+        };
 
         const shapeEnergyWeight = (shape, positive = true) => {
             const Ds = WSM.Fsp.dataMirror(shape);
@@ -181,8 +195,9 @@
 
             //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ shape api
 
-            RNA.take = pill => {
-                RNA.shape = mergeMake(RNA.shape, pill.shape);
+            RNA.take = (pill, positive = true) => {
+                const shape = prepareShape(pill.shape,positive);
+                RNA.shape = mergeMake(RNA.shape, shape);
                 return RNA;
                 };
             RNA.push = f => {
@@ -196,197 +211,12 @@
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Master api
 
         WSM.Fsp = servicesOfShape;
-        WSM.Fsf = servicesOfField;
         WSM.Csp = WorldShape;
         WSM.born = createdShape;
-    };
-    const WorldShape = function (DNA={}) {
-        const {field, shape} = WorldShapeConfig;
-        const { Qx, Qo, Qw } = WorldShapeConfig;
-
-        const serviceForShape ={
-            pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
-            antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
-            antiEnergy: shape => shape.map(Le=>Le).toReversed(),
-            fromBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
-            dataMirror: shape => shape.reduce(
-                (ap,Le,e) => Le.map(
-                    (q,c) => [...ap, q]
-                ),  shape[0].map(G=>[])
-                ),
-            checkShape: shape => Array.isArray(shape) && shape.reduce(
-                (check,layer) => Array.isArray(layer) && check
-                ,true),
-        };
-        const services = {
-            pushMatter: shape => shape.map(Le=>[Qo(), ...Le]),
-            antiMatter: shape => shape.map(Le=>[Le.toReversed()][0]),
-            antiEnergy: shape => shape.map(Le=>Le).toReversed(),
-            fromBinary: shape => shape.map(Le=>Le.map(q=>[Qb(q)][0])),
-            checkShape: shape => Array.isArray(shape) && shape.reduce(
-                    (R,layer) => Array.isArray(layer) && R
-                    ,true),
-            dataMirror: shape => shape.reduce(
-                (ap,Le,e) => Le.map(
-                    (q,c) => [...ap, q]
-                ),  shape[0].map(G=>[])
-                ),
-            joinShapes: (field, shape, h) => field.reduce(
-                (ap,Le,e) => [ ...ap,Le.map(
-                    (x,c) => {
-                        const U = true
-                            && e >= h
-                            && e <  h+ shape.length
-                            && c <  shape[0].length
-                            ;
-                        const y = U && shape[e-h][c] || Qo();
-                        return y||x;
-                    })],
-                    []),
-            chooseRandom: shapes => shapes[(
-                K => K[Math.floor(Math.random()*K.length)]
-                )( Object.keys(shapes) )],
-        };// end of shapeService
-
-        const ribosome = DNA => ({
-            DNA,
-            shape: (DNA => {
-                const {checkShape, chooseRandom} = services;
-                const {shapes, fields} = { shapes, fields:[field] };
-                const uS = DNA.shape && checkShape(DNA.shape);
-                const uN = Object.keys(shapes).includes(DNA.form);
-                const uF = DNA.form === 'field';
-                return (uS && DNA.shape)
-                    || (uN && shapes[DNA.form])
-                    || (uF && fields[0])
-                    || chooseRandom(shapes);
-                })(DNA),
-        });
-        const transcription = ribosome(DNA);
-        const RNA = Object.assign(this,transcription);
     };
 </script>
 
 <script display-source>
-    const field = [
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
-    ];
-    const shape = {
-          A:[
-            [1,1],
-            [1,1],
-        ],D:[
-            [1,1,1,1],
-        ],F:[
-            [1],
-            [1],
-            [1],
-            [1],
-        ],
-        G:[
-            [1,1,0],
-            [0,1,1],
-        ],
-        H:[
-            [1,0],
-            [1,1],
-            [0,1],
-        ],
-        S:[
-            [1,1,1],
-            [0,0,1],
-        ],
-        T:[
-            [1,0,0],
-            [1,1,1],
-        ],
-        M:[
-            [1,1],
-            [0,1],
-            [0,1],
-        ],
-        L:[
-            [1,0],
-            [1,0],
-            [1,1],
-        ],
-    };
-    const ShapeService = {
-
-        pushMatter: shape => shape.map(L=>[0, ...L]),
-
-        antiMatter: shape => shape.map(L=>[L.toReversed()][0]),
-        antiEnergy: shape => shape.map(L=>L).toReversed(),
-
-        makeMirror: shape => shape.reduce(
-            (Out,level,e) => level.map(
-                (quant,c) => [...Out[c], quant]
-            ), [[],[],[],[],[],[]] ),
-
-        join: (field, shape) => {
-            const makeMirror = shape => shape.reduce(
-                (Out,level,e) => level.map(
-                    (quant,c) => [...Out[c], quant]
-                ), [[],[],[],[],[],[]] );
-
-            const makeJoined = (field, shape, h) => field.reduce(
-                    (Ox,Le,e) => [...Ox, Le.map(
-                        (x,c) => {
-                            const mix = true
-                                && e >= h
-                                && e <  h+ shape.length
-                                && c <  shape[0].length
-                                ;
-                            const y = mix && shape[e-h][c] ||0;
-                            return y||x;
-                        })],[]);
-
-            const w  = x => x >= 1;
-            const Mf = makeMirror(field);
-            const Ms = makeMirror(shape);
-            const Hm = (h,a,c) =>(
-                e => e>h ? e:h
-            )(
-                Ms[c] && Ms[c].find(w)?
-                 1
-                +1* Mf[c].findLastIndex(w)
-                -1* Ms[c].findIndex(w)
-                :0
-            );
-            const h = Mf.reduce(Hm,0);
-            return makeJoined(field, shape, h);
-        },
-
-//        Ex: shape =>
-//            shape.reduce(
-//                (Ex,layer,e) =>
-//                    layer.reduce(
-//                        (Ee,q,c) => {
-//                            const p = shape[1+1*e][c];
-//                            const pressure = (q,p) => 1*q+p*1 >= 1;
-//                            return pressure(q,p)
-//                                ? Ee
-//                                : Ee++
-//                                ; }
-//                        ,Ex)
-//                ,0),
-//        excited:  shape =>
-//            shape.map(e =>
-//                e.map(q => q?'x':'o')
-//                    .join('')
-//                        );
-//        ,
-        shakeOnce: 1,
-    };
-//    console.log('ShapeService', ShapeService.Ex(shape['G']));
 
     // const M = f => [ (x,e) => f({x,e}) ];
     // shape => shape.map(M(func)[0]).map(M(wave)[0])
@@ -394,7 +224,7 @@
     const shapeProfile = shape => {
         const makePool = shape =>
             shape.map(e =>
-                e.map(q => q?'x':'o')
+                e.map(q => q?'[※]':'[ ]')
                     .join('')
                         );
         makePool(shape)
@@ -419,13 +249,6 @@
                 e.map( (c,j) =>
                    Gb( fV[i,j])
                      ));
-        const fV = field =>
-            shape.map( (e,i) =>
-                e.map( (c,j) => ({
-                    x:i,
-                    y:j,
-                    m:c,
-                })));
     };
     const fieldFilledByShape = (field,shape) => {
         const dFil = ( shape =>
@@ -437,37 +260,7 @@
 */
 
 
-//    console.group('ShapeService.makeMirror');
-//    console.log(
-//        ShapeService.makeMirror(shape['G'])
-//    );
-//    shapeProfile(shape['G']);
-//    shapeProfile(
-//        ShapeService.makeMirror(shape['T'])
-//    );
-//    shapeProfile(shape['T']);
-//    console.groupEnd('');
 
-//    shapeProfile(field);
-//    console.group('ShapeService.join');
-//    const field2 = ShapeService.join(
-//        field,
-//        shape['G']
-//        );
-//    shapeProfile(shape['G']);
-//    shapeProfile(field2);
-//    const field3 = ShapeService.join(
-//        field2,
-//        shape['H']
-//        );
-//    shapeProfile(shape['H']);
-//    shapeProfile(field3);
-//
-//    console.groupEnd('');
-//    shapeProfile(shape['T']);
-//    shapeProfile(ShapeService.makeMirror(shape['T']));
-//    shapeProfile(shape['G']);
-//    console.log()
 </script>
 <script display-source>
 
@@ -475,7 +268,7 @@
     const WM = new WorldShapeMaster();
 
     const Fm1 = WM.born({form:'field'});
-    const Sm1 = WM.born({form:'F'});
+    const Sm1 = WM.born();
     const Sm2 = WM.born();
     const Sm3 = WM.born();
     console.log('Sm1:',Sm1);
@@ -488,7 +281,7 @@
     Sm2.push();
     Sm3.push();
     Sm3.push();
-    Fm1.take(Sm1);
+    Fm1.take(Sm1,false);
     Fm1.take(Sm2);
     Fm1.take(Sm3);
 
@@ -497,19 +290,10 @@
 
     console.log(
         'tests',
-        //WM.Fsf.findMergeH(Fm1.shape,Sm1.shape)
-        //WM.Fsp.dataEnergy(Sm1.shape,false)
-        //WM.Fsp.dataMirror(Sm1.shape)
+        0
     );
 
     console.groupEnd();
-
-
-//    console.group('WorldShape');
-//    const nSG = new WorldShape({form:'G'});
-//    console.log('nsG:',nSG);
-//    shapeProfile(nSG.shape);
-//    console.groupEnd();
 
 </script>
 </body>
